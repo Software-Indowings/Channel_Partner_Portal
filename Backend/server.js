@@ -36,7 +36,28 @@ db.connect((err) => {
   console.log("Connected to MySQL database as id " + db.threadId);
 });
 
-// app.get("/sendemail",sendMail);
+//RND
+// Handle file upload
+app.post('/upload', upload.single('file'), (req, res) => {
+  // Handle file upload here
+  const file = req.file;
+  console.log(file);
+  // Send response
+  res.send('File uploaded successfully');
+});
+
+// Get user data
+app.get('/users', (req, res) => {
+  const query = 'SELECT * FROM users';
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching user data:', err);
+      res.status(500).send('Error fetching user data');
+      return;
+    }
+    res.json(results);
+  });
+});
 
 // Login Partner
 app.post("/login", async (req, res) => {

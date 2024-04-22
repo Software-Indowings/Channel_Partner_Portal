@@ -261,7 +261,7 @@ function LoginPartner() {
                   </div>
                   <div className="text">
                     <span style={{ fontSize: "12px", color: "#000" }}>
-                      <Link to="/register">Forgotten Password?</Link>
+                      <Link to="/forgotpw"><u>Forgot Password?</u></Link>
                     </span>
                   </div>
 
@@ -283,8 +283,12 @@ function LoginPartner() {
                 <div className="text-center mt-4">
 
                   <span style={{ fontSize: "16px", color: "#000" }}>
-                    Don't have an account? <Link to="/register">Sign Up</Link>
+                    Don't have an account? <Link to="/register"><u>Sign Up</u></Link>
+                    <br/>
+                  <Link to="/file"><u>File</u></Link>
+                  <Link to="/filed"><u>File d</u></Link>
                   </span>
+                 
                 </div>
 
               </MDBCardBody>

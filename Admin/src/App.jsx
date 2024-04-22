@@ -63,7 +63,9 @@ import ProfileForm from "./Partnerportal/Layout/ProfileForm";
 import ProfileEdit from "./Partnerportal/Layout/ProfileEdit";
 import RegForm from "./Partnerportal/Layout/RegForm";
 import RegEdit from "./Partnerportal/Layout/RegEdit";
-
+import ForgotPassword from "./Partnerportal/ForgotPassword";
+import File from "./Partnerportal/Profile/File";
+import Filedisplay from "./Partnerportal/Profile/Filedisplay";
 
 function App() {
   return (
@@ -167,6 +169,24 @@ function App() {
             <ProtectedRoute>
               <Layout />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/forgotpw"
+          element={
+              <ForgotPassword />
+          }
+        />
+        <Route
+          path="/filed"
+          element={
+              <Filedisplay />
+          }
+        />
+         <Route
+          path="/file"
+          element={
+              <File />
           }
         />
         <Route

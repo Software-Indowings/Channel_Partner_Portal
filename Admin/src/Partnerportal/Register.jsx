@@ -271,10 +271,9 @@ function Register() {
                 </MDBBtn>
                 <div className="text-center mt-4">
                 <span style={{ fontSize: "16px", color: "#000" }}>
-                 Login to your exisitng account? <Link to="/portal">Sign In</Link>
+                 Login to your exisitng account? <Link to="/portal"><u>Sign In</u></Link>
                 </span>
               </div>
-
               </MDBCardBody>
             </MDBCol>
           </MDBRow>

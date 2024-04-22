@@ -38,7 +38,7 @@ function Order(props) {
         return response.json();
       })
       .then((data) => {
-        console.log("Response data:", data);
+        // console.log("Response data:", data);
         if (Array.isArray(data)) {
           setOrders(data);
           setError(null);
