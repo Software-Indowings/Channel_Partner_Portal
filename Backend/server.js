@@ -36,39 +36,39 @@ db.connect((err) => {
   console.log("Connected to MySQL database as id " + db.threadId);
 });
 
-//RND
-// Handle file upload
-app.post('/upload', upload.single('file'), (req, res) => {
-  // Handle file upload here
-  const file = req.file;
-  console.log(file);
-  // Send response
-  res.send('File uploaded successfully');
-});
+// //RND
+// // Handle file upload
+// app.post('/upload', upload.single('file'), (req, res) => {
+//   // Handle file upload here
+//   const file = req.file;
+//   console.log(file);
+//   // Send response
+//   res.send('File uploaded successfully');
+// });
 
-// Get user data
-app.get('/users', (req, res) => {
-  const query = 'SELECT * FROM users';
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error('Error fetching user data:', err);
-      res.status(500).send('Error fetching user data');
-      return;
-    }
-    res.json(results);
-  });
-});
+// // Get user data
+// app.get('/users', (req, res) => {
+//   const query = 'SELECT * FROM users';
+//   connection.query(query, (err, results) => {
+//     if (err) {
+//       console.error('Error fetching user data:', err);
+//       res.status(500).send('Error fetching user data');
+//       return;
+//     }
+//     res.json(results);
+//   });
+// });
 
 // Login Partner
 app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  console.log('body-->',req.body);
+  const { username} = req.body;
   console.log(username);
-  console.log(password);
   const sql = "SELECT * FROM partner WHERE username = ?";
   db.query(sql, [username], async (err, result) => {
     const user = result[0];
     console.log(user.username);
-    console.log(user.password);
+    // console.log(user.password);
     console.log(user.category);
     console.log(user.commission);
     if (err) {
@@ -78,15 +78,15 @@ app.post("/login", async (req, res) => {
     if (result.length === 0) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
-    const isValidPassword = password === user.password;
-    console.log(isValidPassword);
-    if (!isValidPassword) {
-      return res.status(401).json({ message: "Invalid username or password" });
-    }
+    // const isValidPassword = password === user.password;
+    // console.log(isValidPassword);
+    // if (!isValidPassword) {
+    //   return res.status(401).json({ message: "Invalid username or password" });
+    // }
     return res.status(200).json({
       message: "Login successful",
       username: user.username,
-      password: user.password,
+      // password: user.password,
       category: user.category,
       commission: user.commission,
       steps: user.steps,
@@ -122,17 +122,14 @@ app.post("/partner", (req, res) => {
 });
 
 
-
 app.post("/register", (req, res) => {
-  const verificationToken = jwt.sign({ email: req.body.username }, 'your_secret_key', { expiresIn: '1h' });
-
-  const sql =
-    "INSERT INTO partner (username, password, verification_token) VALUES (?, ?, ?)";
-  const values = [req.body.username, req.body.password, verificationToken];
+  console.log('register');
+  const sql = "INSERT INTO partner (username) VALUES (?)";
+  const values = [req.body.username]; // Assuming the email address is sent in the 'username' field
 
   db.query(sql, values, (err, result) => {
     if (err) {
-      console.error("Error executing SQL query:", err);
+      console.error("Error executing SQL query:");
       return res
         .status(500)
         .json({ error: "An error occurred during registration." });
@@ -143,6 +140,7 @@ app.post("/register", (req, res) => {
       .json({ success: true, message: "Registration successful. Please verify your email." });
   });
 });
+
 
 app.get("/read/:id", (req, res) => {
   const sql = "SELECT * FROM partner WHERE id =?";

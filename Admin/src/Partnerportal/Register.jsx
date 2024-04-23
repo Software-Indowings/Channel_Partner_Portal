@@ -41,14 +41,11 @@ function Register() {
         setLoginStatus("passwordMismatch");
         return;
       }
-
       await createUserWithEmailAndPassword(auth, email, password).then(
         async (userCred) => {
           const user = userCred.user;
-          const res = await axios.post("https://server.indowings.com/register/", {
+          const res = await axios.post("http://localhost:3307/register/", {
             username: email,
-            password: password,
-            confirmPassword: password,
           });
           await sendEmailVerification(user).then(() => {
             alert("Please check your mail for verification link");
@@ -60,7 +57,6 @@ function Register() {
       console.log("err->>", e);
     }
   };
-
 
   //-------------------------//
 
@@ -121,7 +117,7 @@ function Register() {
                     color: "#333",
                   }}
                 >
-                  Sign Up 
+                  Sign Up
                 </h1>
                 {loginStatus === "success" && (
                   <p
@@ -158,7 +154,13 @@ function Register() {
                 )}
                 <br />
 
-                <div style={{ marginBottom: "20px", marginTop: "10px" ,width: "80%" }}>
+                <div
+                  style={{
+                    marginBottom: "20px",
+                    marginTop: "10px",
+                    width: "80%",
+                  }}
+                >
                   <label
                     style={{
                       display: "block",
@@ -191,7 +193,7 @@ function Register() {
                     }}
                   />
                 </div>
-                <div style={{ marginBottom: "20px" ,width: "80%" }}>
+                <div style={{ marginBottom: "20px", width: "80%" }}>
                   <label
                     style={{
                       display: "block",
@@ -224,7 +226,7 @@ function Register() {
                     }}
                   />
                 </div>
-                <div style={{ marginBottom: "20px", width: "80%"  }}>
+                <div style={{ marginBottom: "20px", width: "80%" }}>
                   <label
                     style={{
                       display: "block",
@@ -263,17 +265,20 @@ function Register() {
                   style={{
                     minWidth: "200px",
                     height: "50px",
-                    width: "80%" 
+                    width: "80%",
                   }}
                   onClick={signUpAction}
                 >
                   Register
                 </MDBBtn>
                 <div className="text-center mt-4">
-                <span style={{ fontSize: "16px", color: "#000" }}>
-                 Login to your exisitng account? <Link to="/portal"><u>Sign In</u></Link>
-                </span>
-              </div>
+                  <span style={{ fontSize: "16px", color: "#000" }}>
+                    Login to your exisitng account?{" "}
+                    <Link to="/portal">
+                      <u>Sign In</u>
+                    </Link>
+                  </span>
+                </div>
               </MDBCardBody>
             </MDBCol>
           </MDBRow>
@@ -296,15 +301,15 @@ const InputField = ({ placeholder, handleChange, type }) => {
       placeholder={placeholder}
       onChange={handleChangeEvent}
       style={{
-          fontSize: "13px",
-          fontFamily: "Arial, sans-serif",
-          color: "black",
-          padding: "0.5rem 1rem",
-          borderRadius: "0.5rem",
-          border: "1px solid #ccc",
-          width: "100%",
-          boxSizing: "border-box",
-        }}
+        fontSize: "13px",
+        fontFamily: "Arial, sans-serif",
+        color: "black",
+        padding: "0.5rem 1rem",
+        borderRadius: "0.5rem",
+        border: "1px solid #ccc",
+        width: "100%",
+        boxSizing: "border-box",
+      }}
     />
   );
 };

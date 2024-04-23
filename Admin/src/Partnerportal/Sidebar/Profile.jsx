@@ -96,11 +96,11 @@ function Profile() {
                         <tr>
                           <th>Registered Address:</th>
                           <td>
-                            {profile.address} <br />
-                            {profile.city}
+                            {partners_profile.address} <br />
+                            {partners_profile.city}
                             <br />
-                            {profile.state}
-                            <br /> {profile.pincode}
+                            {partners_profile.state}
+                            <br /> {partners_profile.pincode}
                           </td>
                         </tr>
                        

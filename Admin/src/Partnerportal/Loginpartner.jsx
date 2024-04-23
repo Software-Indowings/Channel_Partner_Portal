@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "../features/userSlice";
+import { login, logout } from "../features/userSlice";
 import {
   MDBBtn,
   MDBContainer,
@@ -37,58 +37,59 @@ function LoginPartner() {
     setCredentials({ ...credentials, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+
+  const handleSubmit = async () => {
+    // e.preventDefault();
     try {
-      const res = await axios.post("https://server.indowings.com/login/", credentials);
+      const res = await axios.post("http://localhost:3307/login/", credentials);
       if (res.status === 200) {
-        const { username, password, category, commission, steps, is_verified } =
-          res.data;
+        const { username, category, commission, steps, is_verified } = res.data;
         // If steps is null, update it to 0
         const updatedSteps = steps === null ? 0 : steps;
         dispatch(
           login({
             username: username,
-            password: password,
+            // password: password,
             category: category,
             commission: commission,
             steps: updatedSteps,
             is_verified: is_verified,
           })
         );
-
-        await signInWithEmailAndPassword(auth, username, password).then(
-          async (authUser) => {
-            console.log("cred-->", authUser.user.emailVerified);
-            if (authUser.user.emailVerified) {
-              setLoginStatus("success");
-              console.log("steps-->", updatedSteps);
-              if (updatedSteps === 0) {
-                navigate("/update_profile");
-              } else if (updatedSteps === 1) {
-                navigate("/partnerprofile");
-              } else if (updatedSteps === 2) {
-                navigate("/kycform");
-              } else if (updatedSteps === 3) {
-                navigate("/displayregform");
-              } else if (updatedSteps === 4) {
-                if (is_verified) {
-                  navigate("/esign");
-                } else {
-                  navigate("/waiting");
-                }
-              } else if (updatedSteps === 5) {
-                if (is_verified) {
-                  navigate("/layout");
-                } else {
-                  navigate("/waiting");
-                }
+        await signInWithEmailAndPassword(
+          auth,
+          credentials.username,
+          credentials.password
+        ).then(async (authUser) => {
+          console.log("cred-->", authUser.user.emailVerified);
+          if (authUser.user.emailVerified) {
+            setLoginStatus("success");
+            console.log("steps-->", updatedSteps);
+            if (updatedSteps === 0) {
+              navigate("/update_profile");
+            } else if (updatedSteps === 1) {
+              navigate("/partnerprofile");
+            } else if (updatedSteps === 2) {
+              navigate("/kycform");
+            } else if (updatedSteps === 3) {
+              navigate("/displayregform");
+            } else if (updatedSteps === 4) {
+              if (is_verified) {
+                navigate("/esign");
+              } else {
+                navigate("/waiting");
               }
-            } else {
-              alert("Please verify your email");
+            } else if (updatedSteps === 5) {
+              if (is_verified) {
+                navigate("/layout");
+              } else {
+                navigate("/waiting");
+              }
             }
+          } else {
+            alert("Please verify your email");
           }
-        );
+        });
       } else {
         setLoginStatus("failed");
       }
@@ -196,7 +197,7 @@ function LoginPartner() {
                   </p>
                 )}
 
-                <form onSubmit={handleSubmit} style={{ width: "80%" }}>
+                <div style={{ width: "80%" }}>
                   <div style={{ marginBottom: "20px", marginTop: "10px" }}>
                     <label
                       style={{
@@ -261,7 +262,9 @@ function LoginPartner() {
                   </div>
                   <div className="text">
                     <span style={{ fontSize: "12px", color: "#000" }}>
-                      <Link to="/forgotpw"><u>Forgot Password?</u></Link>
+                      <Link to="/forgotpw">
+                        <u>Forgot Password?</u>
+                      </Link>
                     </span>
                   </div>
 
@@ -269,28 +272,33 @@ function LoginPartner() {
                     className="mb-4 px-5"
                     color="dark"
                     size="lg"
-                    type="submit"
                     required
                     style={{
                       width: "100%",
                       minWidth: "200px",
                       height: "50px",
                     }}
+                    onClick={handleSubmit}
                   >
                     Login
                   </MDBBtn>
-                </form>
-                <div className="text-center mt-4">
-
-                  <span style={{ fontSize: "16px", color: "#000" }}>
-                    Don't have an account? <Link to="/register"><u>Sign Up</u></Link>
-                    <br/>
-                  <Link to="/file"><u>File</u></Link>
-                  <Link to="/filed"><u>File d</u></Link>
-                  </span>
-                 
                 </div>
-
+                <div className="text-center mt-4">
+                  <span style={{ fontSize: "16px", color: "#000" }}>
+                    Don't have an account?{" "}
+                    <Link to="/register">
+                      <u>Sign Up</u>
+                    </Link>
+                    <br />
+                    {/* <Link to="/file">
+                      <u>File</u>
+                    </Link>
+                    <Link to="/filed">
+                      <u>File d</u>
+                    </Link> */}
+                   
+                  </span>
+                </div>
               </MDBCardBody>
             </MDBCol>
           </MDBRow>

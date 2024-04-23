@@ -1,13 +1,30 @@
 
 import React from "react";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../features/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import {logout, selectUser } from "../../features/userSlice";
 import background from "../../images/3.png";
-
+import { auth } from "../../firebase.js";
+import { signOut } from "firebase/auth";
+import {  useNavigate } from "react-router-dom";
 
 function Waiting(props) {
     const user = useSelector(selectUser);
-  
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const Logout = async (e) => {
+      e.preventDefault();
+      await signOut(auth)
+        .then(() => {
+          console.log("logout");
+          dispatch(logout());
+          navigate("/portal");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
     return (
       <div
         style={{
@@ -21,6 +38,33 @@ function Waiting(props) {
           padding: "20px",
         }}
       >
+          <button
+        style={{
+          position: "absolute",
+          top: "10px", 
+          right: "10px",
+          padding: "8px 16px",
+          cursor: "pointer",
+          borderBottom: "1px solid #ccc",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          color: "black",
+          borderRadius: "5px",
+          backgroundColor: "white",
+          border: "none",
+          outline: "none",
+        }}
+        onClick={Logout}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = "#EF7F1A";
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = "white";
+        }}
+      >
+        Logout
+      </button>
         <div
           className="row justify-content-center"
           style={{

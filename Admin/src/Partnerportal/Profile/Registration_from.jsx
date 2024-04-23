@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import logo from "../../images/partner.png";
 import background from "../../images/3.png";
-import { selectUser } from "../../features/userSlice";
+import { logout, selectUser } from "../../features/userSlice";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../firebase.js";
+import { signOut } from "firebase/auth";
 
 function Registration_from(props) {
   const [loading, setLoading] = useState(true);
@@ -12,6 +14,7 @@ function Registration_from(props) {
   const [directors, setDirectors] = useState({});
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const finalData = new FormData();
 
@@ -108,6 +111,19 @@ function Registration_from(props) {
     fetch();
   }, []);
 
+  const Logout = async (e) => {
+    e.preventDefault();
+    await signOut(auth)
+      .then(() => {
+        console.log("logout");
+        dispatch(logout());
+        navigate("/portal");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -195,7 +211,7 @@ function Registration_from(props) {
 
             <div className="col-sm-6 col-md-6 col-12">
               <label htmlFor={`name_${i}`} style={headingstyle}>
-               Director's Name:
+                Director's Name:
               </label>
               <input
                 type="text"
@@ -226,7 +242,7 @@ function Registration_from(props) {
           <div className="row">
             <div className="col-sm-6 col-md-6 col-12">
               <label htmlFor={`mobile_${i}`} style={headingstyle}>
-              Director's Phone Number:
+                Director's Phone Number:
               </label>
               <input
                 type="text"
@@ -255,7 +271,7 @@ function Registration_from(props) {
 
             <div className="col-sm-6 col-md-6 col-12">
               <label htmlFor={`email_${i}`} style={headingstyle}>
-              Director's Email Address:
+                Director's Email Address:
               </label>
               <input
                 type="email"
@@ -279,7 +295,7 @@ function Registration_from(props) {
           <div className="row">
             <div className="col-sm-6 col-md-6 col-12">
               <label htmlFor={`aadhar_${i}`} style={headingstyle}>
-              Director's Aadhar Number:
+                Director's Aadhar Number:
               </label>
               <input
                 type="text"
@@ -322,7 +338,7 @@ function Registration_from(props) {
           <div className="row">
             <div className="col-sm-6 col-md-6 col-12">
               <label htmlFor={`pan_${i}`} style={headingstyle}>
-              Director's PAN Number:
+                Director's PAN Number:
               </label>
               <input
                 type="text"
@@ -439,6 +455,34 @@ function Registration_from(props) {
         padding: "20px",
       }}
     >
+      <button
+        style={{
+          position: "absolute",
+          top: "10px", 
+          right: "10px",
+          padding: "8px 16px",
+          cursor: "pointer",
+          borderBottom: "1px solid #ccc",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          color: "black",
+          borderRadius: "5px",
+          backgroundColor: "white",
+          border: "none",
+          outline: "none",
+        }}
+        onClick={Logout}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = "#EF7F1A";
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = "white";
+        }}
+      >
+        Logout
+      </button>
+
       <form
         onSubmit={handleSubmit}
         encType="multipart/form-data"
@@ -521,7 +565,7 @@ function Registration_from(props) {
         <div className="row">
           <div className="col-sm-6 col-md-6 col-12">
             <label htmlFor="pan_number" style={headingstyle}>
-             Company's PAN Number:
+              Company's PAN Number:
             </label>
             <input
               type="text"

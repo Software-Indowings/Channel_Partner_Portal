@@ -29,11 +29,11 @@ function Header({ openSidebar }) {
       });
   };
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    dispatch(logout());
-    navigate("/portal");
-  };
+  // const handleLogout = (e) => {
+  //   e.preventDefault();
+  //   dispatch(logout());
+  //   navigate("/portal");
+  // };
 
   useEffect(() => {
     const handleClickOutside = (event) => {

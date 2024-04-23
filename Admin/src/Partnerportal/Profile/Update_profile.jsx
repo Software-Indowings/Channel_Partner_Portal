@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import logo from "../../images/partner.png";
 import background from "../../images/3.png";
-import { selectUser } from "../../features/userSlice";
+import { logout,selectUser } from "../../features/userSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../../firebase.js";
+import { signOut } from "firebase/auth";
 
 function Update_profile(props) {
   const [profile, setProfile] = useState([]);
   const navigate = useNavigate();
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const indianStates = [
     "Andaman and Nicobar Islands",
@@ -67,6 +70,21 @@ function Update_profile(props) {
     reg_email: "",
   });
   const [error, setError] = useState("");
+
+  
+  const Logout = async (e) => {
+    e.preventDefault();
+    await signOut(auth)
+      .then(() => {
+        console.log("logout");
+        dispatch(logout());
+        navigate("/portal");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
 
   useEffect(() => {
     axios
@@ -154,6 +172,33 @@ function Update_profile(props) {
         padding: "20px",
       }}
     >
+       <button
+        style={{
+          position: "absolute",
+          top: "10px", 
+          right: "10px",
+          padding: "8px 16px",
+          cursor: "pointer",
+          borderBottom: "1px solid #ccc",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          color: "black",
+          borderRadius: "5px",
+          backgroundColor: "white",
+          border: "none",
+          outline: "none",
+        }}
+        onClick={Logout}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = "#EF7F1A";
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = "white";
+        }}
+      >
+        Logout
+      </button>
       <form
         onSubmit={handleSubmit}
         encType="multipart/form-data"
@@ -643,7 +688,7 @@ function Update_profile(props) {
                 }
                 required
               >
-                <option value="">Select State</option>
+                <option value="">Select</option>
                 <option value="agriculture">Agriculture</option>
                 <option value="surveillance">Surveillance</option>
                 <option value="cinematics">Cinematics</option>

@@ -2,17 +2,32 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import background from "../../images/3.png";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../features/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { logout, selectUser } from "../../features/userSlice";
+import { auth } from "../../firebase.js";
+import { signOut } from "firebase/auth";
+
 
 function DisplayRegForm(props) {
   const { id } = useParams();
   const [profile, setProfile] = useState({});
   const [directors, setDirectors] = useState([]);
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   
-
+  const Logout = async (e) => {
+    e.preventDefault();
+    await signOut(auth)
+      .then(() => {
+        console.log("logout");
+        dispatch(logout());
+        navigate("/portal");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
     const fetch = async () => {
       await axios
@@ -82,6 +97,33 @@ function DisplayRegForm(props) {
         padding: "20px",
       }}
     >
+       <button
+        style={{
+          position: "absolute",
+          top: "10px", 
+          right: "10px",
+          padding: "8px 16px",
+          cursor: "pointer",
+          borderBottom: "1px solid #ccc",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          color: "black",
+          borderRadius: "5px",
+          backgroundColor: "white",
+          border: "none",
+          outline: "none",
+        }}
+        onClick={Logout}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = "#EF7F1A";
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = "white";
+        }}
+      >
+        Logout
+      </button>
       <div
         //   className="w-75 bg-white rounded p-5"
         style={{

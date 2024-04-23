@@ -3,13 +3,30 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../../images/partner.png";
 import background from "../../images/3.png";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../features/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { logout,selectUser } from "../../features/userSlice";
+import { auth } from "../../firebase.js";
+import { signOut } from "firebase/auth";
 
 function PartnerProfile() {
   const [profile, setProfile] = useState(null);
   const user = useSelector(selectUser);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  
+  const Logout = async (e) => {
+    e.preventDefault();
+    await signOut(auth)
+      .then(() => {
+        console.log("logout");
+        dispatch(logout());
+        navigate("/portal");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     const fetch = async () => {
@@ -68,6 +85,33 @@ function PartnerProfile() {
         padding: "20px",
       }}
     >
+       <button
+        style={{
+          position: "absolute",
+          top: "10px", 
+          right: "10px",
+          padding: "8px 16px",
+          cursor: "pointer",
+          borderBottom: "1px solid #ccc",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          color: "black",
+          borderRadius: "5px",
+          backgroundColor: "white",
+          border: "none",
+          outline: "none",
+        }}
+        onClick={Logout}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = "#EF7F1A";
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = "white";
+        }}
+      >
+        Logout
+      </button>
       <div
         style={{
           backgroundColor: "rgba(255, 255, 255, 0.85)",
