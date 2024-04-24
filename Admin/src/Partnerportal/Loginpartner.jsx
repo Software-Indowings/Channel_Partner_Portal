@@ -290,12 +290,12 @@ function LoginPartner() {
                       <u>Sign Up</u>
                     </Link>
                     <br />
-                    {/* <Link to="/file">
+                    <Link to="/file">
                       <u>File</u>
                     </Link>
                     <Link to="/filed">
                       <u>File d</u>
-                    </Link> */}
+                    </Link>
                    
                   </span>
                 </div>

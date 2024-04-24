@@ -137,7 +137,7 @@ function DisplayRegForm(props) {
       >
         <h3 className="mb-4">Registration Details:</h3>
         <div className="d-flex justify-content-end mb-4">
-          <Link to="/regform" className="btn btn-success">
+          <Link to="/kycform" className="btn btn-success">
             Update Registration Form
           </Link>
         </div>

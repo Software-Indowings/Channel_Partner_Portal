@@ -39,7 +39,8 @@
     "recharts": "^2.12.2",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",

@@ -7,6 +7,10 @@ import { logout, selectUser } from "../../features/userSlice";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase.js";
 import { signOut } from "firebase/auth";
+// import { v4 } from "uuid";
+// import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+// import { addDoc, collection, getDocs } from "firebase/firestore";
+// import { imgDB, txtDB } from "../../firebase.js";
 
 function Registration_from(props) {
   const [loading, setLoading] = useState(true);
