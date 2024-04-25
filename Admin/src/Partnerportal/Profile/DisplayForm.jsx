@@ -21,8 +21,6 @@ function DisplayForm() {
       .catch((err) => console.log(err));
   }, []);
 
-  // Filter form based on search query
-  // Filter form based on search query
   useEffect(() => {
     const filtered = form.filter((display) =>
       display.reg_email?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -109,7 +107,7 @@ function DisplayForm() {
             ))}
           </tbody>
         </table>
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <div className="mt-4" style={{ position: "fixed", bottom: 50, left: 50 }}>
           <Link to="/adminpage" className="btn btn-primary me-2">
             Back
           </Link>

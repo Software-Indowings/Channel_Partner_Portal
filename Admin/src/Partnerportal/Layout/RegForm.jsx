@@ -6,12 +6,11 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 
 const RegForm = () => {
-    const { id } = useParams();
+  const { id } = useParams();
   const [profile, setProfile] = useState({});
   const [directors, setDirectors] = useState([]);
   const user = useSelector(selectUser);
   const navigate = useNavigate();
-  
 
   useEffect(() => {
     const fetch = async () => {
@@ -45,10 +44,8 @@ const RegForm = () => {
     }
   }, [profile]);
 
- 
   return (
     <div
-      // className="d-flex flex-column vh-100 justify-content-center align-items-center"
       style={{
         backgroundImage: `url(${background})`,
         backgroundSize: "cover",
@@ -97,15 +94,44 @@ const RegForm = () => {
             </tr>
             <tr>
               <th>PAN Number:</th>
-              <td>{profile.pan_number}</td>
+              <td>
+                {profile.pan_number}
+                <br />
+                <a
+                  href={profile.pan_card}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <u>(View PAN Card)</u>
+                </a>
+              </td>
             </tr>
             <tr>
               <th>GSTIN:</th>
-              <td>{profile.gstin}</td>
+              <td>
+                {profile.gstin}
+                <br />
+                <a
+                  href={profile.gstin_certificate}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <u>(View GSTIN Certificate)</u>
+                </a>
+              </td>
             </tr>
             <tr>
               <th>Date of Incorporation:</th>
-              <td>{profile.incorporation_date?.split("T")[0]}
+              <td>
+                {profile.incorporation_date?.split("T")[0]}
+                <br />
+                <a
+                  href={profile.incorporation_certificate}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <u>(View Incorporation Certificate)</u>
+                </a>
               </td>
             </tr>
             <tr>
@@ -122,7 +148,17 @@ const RegForm = () => {
             </tr>
             <tr>
               <th>IFSC Code:</th>
-              <td>{profile.ifsc_code}</td>
+              <td>
+                {profile.ifsc_code}
+                <br />
+                <a
+                  href={profile.cancelled_cheque}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <u>(View Cancelled Cheque)</u>
+                </a>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -143,8 +179,33 @@ const RegForm = () => {
                 <td>{director.company_id}</td>
                 <td>{director.name}</td>
                 <td>{director.DIN}</td>
-                <td>{director.PAN}</td>
-                <td>{director.Aadhar}</td>
+                <td>
+                  {director.PAN}
+                  <br />
+                  {director.pan_file && (
+                    <a
+                      href={director.pan_file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <u>(View PAN Card)</u>
+                    </a>
+                  )}
+                </td>
+
+                <td>
+                  {director.Aadhar}
+                  <br />
+                  {director.aadhar_file && (
+                    <a
+                      href={director.aadhar_file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <u>(View Aadhar Card)</u>
+                    </a>
+                  )}
+                </td>
                 <td>{director.mobile}</td>
                 <td>{director.email}</td>
               </tr>
@@ -152,19 +213,13 @@ const RegForm = () => {
           </tbody>
         </table>
         <div className="mt-4" style={{ flexBasis: "100%" }}>
-            <Link to="/layout" className="btn btn-primary me-2">
-              Back
-            </Link>
-          </div>
+          <Link to="/layout" className="btn btn-primary me-2">
+            Back
+          </Link>
+        </div>
       </div>
     </div>
   );
 };
 
 export default RegForm;
-
-
-
-
-
-

@@ -27,6 +27,11 @@ function LoginPartner() {
     username: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const [loginStatus, setLoginStatus] = useState(null);
   const [loginStep, setLoginStep] = useState(-1);
   const [user] = useAuthState(auth);
@@ -37,11 +42,10 @@ function LoginPartner() {
     setCredentials({ ...credentials, [name]: value });
   };
 
-
   const handleSubmit = async () => {
     // e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3307/login/", credentials);
+      const res = await axios.post("http://server.indowings.com/login/", credentials);
       if (res.status === 200) {
         const { username, category, commission, steps, is_verified } = res.data;
         // If steps is null, update it to 0
@@ -136,7 +140,7 @@ function LoginPartner() {
       <MDBContainer className="my-5" style={{ padding: "5px" }}>
         <MDBCard
           style={{
-            border: "2px solid orange",
+            border: "3px solid #EF7F1A",
             width: "100%",
             backgroundColor: "#f9f9f9",
             borderRadius: "20px",
@@ -242,32 +246,52 @@ function LoginPartner() {
                     >
                       <b>Password</b>
                     </label>
-                    <MDBInput
-                      wrapperClass="mb-4"
-                      id="password"
-                      type="password"
-                      size="lg"
-                      name="password"
-                      placeholder="Enter password"
-                      value={credentials.password}
-                      onChange={handleInputChange}
-                      required
-                      style={{
-                        fontSize: "16px",
+                    <div style={{ position: "relative", display: "inline-block",  width: "100%" }}>
+                      <MDBInput
+                        wrapperClass="mb-4"
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        size="lg"
+                        name="password"
+                        placeholder="Enter password"
+                        value={credentials.password}
+                        onChange={handleInputChange}
+                        required
+                        style={{
+                          fontSize: "16px",
                         fontFamily: "Arial, sans-serif",
                         color: "#333",
                         borderRadius: "10px",
-                      }}
-                    />
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="btn btn-sm btn-outline-primary ms-2"
+                        style={{
+                          backgroundColor: "#191b30",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: "10px",
+                          padding: "5px 10px",
+                          position: "absolute",
+                          top: "32%",
+                          right: "15px", // Adjust the positioning as needed
+                          transform: "translateY(-50%)",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {showPassword ? "Hide" : "Show"}
+                      </button>
+                    </div>
                   </div>
-                  <div className="text">
-                    <span style={{ fontSize: "12px", color: "#000" }}>
+                  <div className="text" style={{ textAlign: "right" }}>
+                    <span style={{ fontSize: "12px", color: "#EF7F1A" }}>
                       <Link to="/forgotpw">
-                        <u>Forgot Password?</u>
+                        <b>Forgot Password?</b>
                       </Link>
                     </span>
                   </div>
-
                   <MDBBtn
                     className="mb-4 px-5"
                     color="dark"
@@ -285,18 +309,17 @@ function LoginPartner() {
                 </div>
                 <div className="text-center mt-4">
                   <span style={{ fontSize: "16px", color: "#000" }}>
-                    Don't have an account?{" "}
-                    <Link to="/register">
-                      <u>Sign Up</u>
+                    Don't have an account yet?{" "}
+                    <Link to="/register" style={{ color: "#EF7F1A" }}>
+                      <b>Sign Up</b>
                     </Link>
                     <br />
-                    <Link to="/file">
+                    {/* <Link to="/file">
                       <u>File</u>
                     </Link>
                     <Link to="/filed">
                       <u>File d</u>
-                    </Link>
-                   
+                    </Link> */}
                   </span>
                 </div>
               </MDBCardBody>

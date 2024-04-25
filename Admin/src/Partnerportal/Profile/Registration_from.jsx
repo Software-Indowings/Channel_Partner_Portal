@@ -7,10 +7,9 @@ import { logout, selectUser } from "../../features/userSlice";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase.js";
 import { signOut } from "firebase/auth";
-// import { v4 } from "uuid";
-// import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-// import { addDoc, collection, getDocs } from "firebase/firestore";
-// import { imgDB, txtDB } from "../../firebase.js";
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { imgDB } from "../../firebase.js";
 
 function Registration_from(props) {
   const [loading, setLoading] = useState(true);
@@ -40,6 +39,39 @@ function Registration_from(props) {
   });
   const [error, setError] = useState("");
 
+  const handleUpload = (e, fieldName) => {
+    const file = e.target.files[0];
+    console.log(file);
+    const imgs = ref(imgDB, `Files/${v4()}.${file.name.split(".").pop()}`);
+    uploadBytes(imgs, file).then((data) => {
+      console.log(data, "imgs");
+      getDownloadURL(data.ref).then((val) => {
+        console.log(val);
+        setValues({ ...values, [fieldName]: val });
+      });
+    });
+  };
+  const handledocs = (e, fieldName) => {
+    const file = e.target.files[0];
+    console.log(file);
+    const imgs = ref(imgDB, `Files/${v4()}.${file.name.split(".").pop()}`);
+    uploadBytes(imgs, file).then((data) => {
+      console.log(data, "imgs");
+      getDownloadURL(data.ref).then((val) => {
+        console.log(val);
+        const directorIndex = parseInt(fieldName.split('_').pop());
+        const updatedField = fieldName.includes('aadhar') ? 'aadhar_file' : 'pan_file';
+        setDirectors((prevDirectors) => ({
+          ...prevDirectors,
+          [`Dir_${directorIndex}`]: {
+            ...prevDirectors[`Dir_${directorIndex}`],
+            [updatedField]: val,
+          },
+        }));
+      });
+    });
+  };
+  
   useEffect(() => {
     if (user) {
       setValues((prevValues) => ({
@@ -48,11 +80,6 @@ function Registration_from(props) {
       }));
     }
   }, [user]);
-
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    finalData.append(name, files);
-  };
 
   const headingstyle = {
     fontWeight: "bold",
@@ -327,13 +354,16 @@ function Registration_from(props) {
             </div>
 
             <div className="col-sm-6 col-md-6 col-12">
-              <label htmlFor={`file_aadhar_${i}`} style={headingstyle}>
+              <label htmlFor={`aadhar_file_${i}`} style={headingstyle}>
                 Upload Aadhar Card:
               </label>
               <input
                 type="file"
-                id={`file_aadhar_${i}`}
-                name={`file_aadhar_${i}`}
+                id={`aadhar_file_${i}`}
+                name={`aadhar_file_${i}`}
+                onChange={(e) => {
+                  handledocs(e, `aadhar_file_${i}`);
+                }}
                 style={inputStyle}
                 required
               />
@@ -428,13 +458,16 @@ function Registration_from(props) {
             </div>
 
             <div className="col-sm-6 col-md-6 col-12">
-              <label htmlFor={`file_pan_${i}`} style={headingstyle}>
+              <label htmlFor={`pan_file_${i}`} style={headingstyle}>
                 Upload PAN Card:
               </label>
               <input
                 type="file"
-                id={`file_pan_${i}`}
-                name={`file_pan_${i}`}
+                id={`pan_file_${i}`}
+                name={`pan_file_${i}`}
+                onChange={(e) => {
+                  handledocs(e, `pan_file_${i}`);
+                }}
                 style={inputStyle}
                 required
               />
@@ -462,7 +495,7 @@ function Registration_from(props) {
       <button
         style={{
           position: "absolute",
-          top: "10px", 
+          top: "10px",
           right: "10px",
           padding: "8px 16px",
           cursor: "pointer",
@@ -578,42 +611,33 @@ function Registration_from(props) {
               value={values.pan_number}
               onChange={(e) => {
                 let alphaRegex = /^[a-zA-Z]+$/;
-                //console.log(e.target.value);
                 if (e.target.value === "") {
                   setValues({ ...values, pan_number: "" });
                 } else {
                   const straw = String(e.target.value).toUpperCase();
                   let len = straw.length;
-                  // console.log(len);
                   if (len < 6) {
-                    // all capitals and must be english letter
                     let char = straw.slice(len - 1, len);
-                    //console.log("sasa"+char);
                     if (alphaRegex.test(char)) {
                       setValues({ ...values, pan_number: straw });
                     }
                   } else if (len >= 6 && len < 10) {
-                    // must be a number on slicing
                     let char = straw.slice(len - 1, len);
-                    //console.log("logging"+char);
                     if (!isNaN(Number(char))) {
                       setValues({ ...values, pan_number: straw });
                     }
                   } else if (len === 10) {
                     let char = straw.slice(len - 1, len);
-                    // console.log(char);
                     if (alphaRegex.test(char)) {
                       setValues({ ...values, pan_number: straw });
                     }
                   }
                 }
-                // setValues({ ...values, pan_number: e.target.value })
               }}
               style={inputStyle}
               pattern="[A-Za-z0-9]{10}"
               title="Should be 10 characters/digits"
               maxLength={10}
-              // placeholder="length 10"
               required
             />
           </div>
@@ -623,9 +647,9 @@ function Registration_from(props) {
             </label>
             <input
               type="file"
-              id="pan_card"
-              name="pan_card"
-              onChange={handleFileChange}
+              onChange={(e) => {
+                handleUpload(e, "pan_card");
+              }}
               style={inputStyle}
               required
             />
@@ -645,30 +669,27 @@ function Registration_from(props) {
               value={values.gstin}
               onChange={(e) => {
                 let alphaRegex = /^[a-zA-Z]+$/;
-                //console.log(e.target.value);
+
                 if (e.target.value === "") {
                   setValues({ ...values, gstin: "" });
                 } else {
                   const straw = String(e.target.value).toUpperCase();
                   let len = straw.length;
-                  // console.log(len);
+
                   if (len < 3) {
-                    // must be a number on slicing
                     let char = straw.slice(len - 1, len);
-                    //console.log("logging"+char);
+
                     if (!isNaN(Number(char))) {
                       setValues({ ...values, gstin: straw });
                     }
                   }
 
                   if (len >= 3 && len < 8) {
-                    // all capitals and must be english letter
                     let char = straw.slice(len - 1, len);
                     if (alphaRegex.test(char)) {
                       setValues({ ...values, gstin: straw });
                     }
                   } else if (len >= 8 && len < 12) {
-                    // must be a number on slicing
                     let char = straw.slice(len - 1, len);
                     if (!isNaN(Number(char))) {
                       setValues({ ...values, gstin: straw });
@@ -689,14 +710,12 @@ function Registration_from(props) {
                       setValues({ ...values, gstin: straw });
                     }
                   } else if (len === 15) {
-                    // must be a number on slicing
                     let char = straw.slice(len - 1, len);
                     if (!isNaN(Number(char))) {
                       setValues({ ...values, gstin: straw });
                     }
                   }
                 }
-                // setValues({ ...values, pan_number: e.target.value })
               }}
               style={inputStyle}
               pattern="[A-Za-z0-9]{15}"
@@ -711,9 +730,9 @@ function Registration_from(props) {
             </label>
             <input
               type="file"
-              id="gstin_certificate"
-              name="gstin_certificate"
-              onChange={handleFileChange}
+              onChange={(e) => {
+                handleUpload(e, "gstin_certificate");
+              }}
               style={inputStyle}
               required
             />
@@ -743,9 +762,9 @@ function Registration_from(props) {
             </label>
             <input
               type="file"
-              id="incorporation_certificate"
-              name="incorporation_certificate"
-              onChange={handleFileChange}
+              onChange={(e) => {
+                handleUpload(e, "incorporation_certificate");
+              }}
               style={inputStyle}
               required
             />
@@ -780,23 +799,23 @@ function Registration_from(props) {
                 }
               }}
               style={inputStyle}
-              pattern="[0-9]*" // Allow only numeric characters
+              pattern="[0-9]*"
               title="Should be numeric"
-              minLength={10} // Set minimum length to 10 characters
-              maxLength={20} // Set maximum length to 20 characters
+              minLength={10}
+              maxLength={20}
               required
             />
           </div>
 
           <div className="col-sm-6 col-md-6 col-12">
-            <label htmlFor="file_cancelled_cheque" style={headingstyle}>
+            <label htmlFor="cancelled_cheque" style={headingstyle}>
               Upload Cancelled Cheque:
             </label>
             <input
               type="file"
-              id="file_cancelled_cheque"
-              name="file_cancelled_cheque"
-              onChange={handleFileChange}
+              onChange={(e) => {
+                handleUpload(e, "cancelled_cheque");
+              }}
               style={inputStyle}
               required
             />

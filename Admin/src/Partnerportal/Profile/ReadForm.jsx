@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import background from "../../images/3.png";
 
-
 function ReadForm(props) {
   const { id } = useParams();
   const [profile, setProfile] = useState({});
@@ -43,28 +42,28 @@ function ReadForm(props) {
 
   return (
     <div
-    className="d-flex flex-column vh-100 justify-content-center align-items-center"
-    style={{
-      backgroundImage: `url(${background})`,
-      backgroundSize: "cover",
-      minHeight: "100vh",
-      width: "max",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: "20px",
-    }}
-  >
-      <div 
-    //   className="w-75 bg-white rounded p-5"
-       style={{
-        backgroundColor: "rgba(255, 255, 255, 0.8)",
-        boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.1)",
+      className="d-flex flex-column vh-100 justify-content-center align-items-center"
+      style={{
+        backgroundImage: `url(${background})`,
+        backgroundSize: "cover",
+        minHeight: "100vh",
+        width: "max",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         padding: "20px",
-        borderRadius: "10px",
-        width: "90%",
-        maxWidth: "1200px",
-      }}>
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.1)",
+          padding: "20px",
+          borderRadius: "10px",
+          width: "90%",
+          maxWidth: "1200px",
+        }}
+      >
         <h3 className="mb-4">Registration Details:</h3>
         <table className="table table-bordered">
           <tbody>
@@ -86,17 +85,39 @@ function ReadForm(props) {
             </tr>
             <tr>
               <th>PAN Number:</th>
-              <td>{profile.pan_number}</td>
+              <td>{profile.pan_number}
+              <br/>
+              <a
+                  href={profile.pan_card}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                 <u>(View PAN Card)</u> 
+                </a></td>
             </tr>
             <tr>
               <th>GSTIN:</th>
-              <td>{profile.gstin}</td>
+              <td>{profile.gstin}<br/>
+              <a
+                  href={profile.gstin_certificate}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                 <u>(View GSTIN Certificate)</u> 
+                </a></td>
             </tr>
             <tr>
               <th>Date of Incorporation:</th>
-              <td>{profile.incorporation_date?.split("T")[0]}</td>
+              <td>{profile.incorporation_date?.split("T")[0]}<br/>
+              <a
+                  href={profile.incorporation_certificate}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                 <u>(View Incorporation Certificate)</u> 
+                </a></td>
             </tr>
-            <tr> 
+            <tr>
               <th>Account Number:</th>
               <td>{profile.bank_details}</td>
             </tr>
@@ -110,9 +131,15 @@ function ReadForm(props) {
             </tr>
             <tr>
               <th>IFSC Code:</th>
-              <td>{profile.ifsc_code}</td>
+              <td>{profile.ifsc_code}<br/>
+              <a
+                  href={profile.cancelled_cheque}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                 <u>(View Cancelled Cheque)</u> 
+                </a></td>
             </tr>
-           
           </tbody>
         </table>
         <h3 className="mb-4">Directors:</h3>
@@ -132,8 +159,33 @@ function ReadForm(props) {
                 <td>{director.company_id}</td>
                 <td>{director.name}</td>
                 <td>{director.DIN}</td>
-                <td>{director.PAN}</td>
-                <td>{director.Aadhar}</td>
+                <td>
+                  {director.PAN}
+                  <br />
+                  {director.pan_file && (
+                    <a
+                      href={director.pan_file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <u>(View PAN Card)</u>
+                    </a>
+                  )}
+                </td>
+
+                <td>
+                  {director.Aadhar}
+                  <br />
+                  {director.aadhar_file && (
+                    <a
+                      href={director.aadhar_file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <u>(View Aadhar Card)</u>
+                    </a>
+                  )}
+                </td>
                 <td>{director.mobile}</td>
                 <td>{director.email}</td>
               </tr>

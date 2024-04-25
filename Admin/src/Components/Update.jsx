@@ -83,7 +83,7 @@ function Update(props) {
                             onChange={e => setValues({ ...values, username: e.target.value })}
                         />
                     </div>
-                    <div style={{ marginBottom: '20px' }}>
+                    {/* <div style={{ marginBottom: '20px' }}>
                         <label htmlFor="password">Password</label>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <input
@@ -114,8 +114,8 @@ function Update(props) {
                             >
                                 {showPassword ? 'Hide' : 'Show'}
                             </button>
-                        </div>
-                    </div>
+                        </div> */}
+                    {/* </div> */}
                     <div style={{ marginBottom: '20px' }}>
                         <label htmlFor="commission">Commission</label>
                         <input

@@ -5,6 +5,9 @@ import logo from "../../images/partner.png";
 import background from "../../images/3.png";
 import { selectUser } from "../../features/userSlice";
 import { useNavigate } from "react-router-dom";
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { imgDB } from "../../firebase.js";
 
 const RegEdit = () => {
     const [loading, setLoading] = useState(true);
@@ -33,6 +36,39 @@ const RegEdit = () => {
     });
     const [error, setError] = useState("");
   
+    const handleUpload = (e, fieldName) => {
+      const file = e.target.files[0];
+      console.log(file);
+      const imgs = ref(imgDB, `Files/${v4()}.${file.name.split(".").pop()}`);
+      uploadBytes(imgs, file).then((data) => {
+        console.log(data, "imgs");
+        getDownloadURL(data.ref).then((val) => {
+          console.log(val);
+          setValues({ ...values, [fieldName]: val });
+        });
+      });
+    };
+    const handledocs = (e, fieldName) => {
+      const file = e.target.files[0];
+      console.log(file);
+      const imgs = ref(imgDB, `Files/${v4()}.${file.name.split(".").pop()}`);
+      uploadBytes(imgs, file).then((data) => {
+        console.log(data, "imgs");
+        getDownloadURL(data.ref).then((val) => {
+          console.log(val);
+          const directorIndex = parseInt(fieldName.split('_').pop());
+          const updatedField = fieldName.includes('aadhar') ? 'aadhar_file' : 'pan_file';
+          setDirectors((prevDirectors) => ({
+            ...prevDirectors,
+            [`Dir_${directorIndex}`]: {
+              ...prevDirectors[`Dir_${directorIndex}`],
+              [updatedField]: val,
+            },
+          }));
+        });
+      });
+    };
+
     useEffect(() => {
       if (user) {
         setValues((prevValues) => ({
@@ -41,11 +77,6 @@ const RegEdit = () => {
         }));
       }
     }, [user]);
-  
-    const handleFileChange = (e) => {
-      const { name, files } = e.target;
-      finalData.append(name, files);
-    };
   
     const headingstyle = {
       fontWeight: "bold",
@@ -306,12 +337,15 @@ const RegEdit = () => {
                   Upload Aadhar Card:
                 </label>
                 <input
-                  type="file"
-                  id={`file_aadhar_${i}`}
-                  name={`file_aadhar_${i}`}
-                  style={inputStyle}
-                  required
-                />
+                type="file"
+                id={`aadhar_file_${i}`}
+                name={`aadhar_file_${i}`}
+                onChange={(e) => {
+                  handledocs(e, `aadhar_file_${i}`);
+                }}
+                style={inputStyle}
+                required
+              />
               </div>
             </div>
             <div className="row">
@@ -407,12 +441,15 @@ const RegEdit = () => {
                   Upload PAN Card:
                 </label>
                 <input
-                  type="file"
-                  id={`file_pan_${i}`}
-                  name={`file_pan_${i}`}
-                  style={inputStyle}
-                  required
-                />
+                type="file"
+                id={`pan_file_${i}`}
+                name={`pan_file_${i}`}
+                onChange={(e) => {
+                  handledocs(e, `pan_file_${i}`);
+                }}
+                style={inputStyle}
+                required
+              />
               </div>
             </div>
           </div>
@@ -569,13 +606,13 @@ const RegEdit = () => {
                 Upload PAN Card:
               </label>
               <input
-                type="file"
-                id="pan_card"
-                name="pan_card"
-                onChange={handleFileChange}
-                style={inputStyle}
-                required
-              />
+              type="file"
+              onChange={(e) => {
+                handleUpload(e, "pan_card");
+              }}
+              style={inputStyle}
+              required
+            />
             </div>
           </div>
   
@@ -657,13 +694,13 @@ const RegEdit = () => {
                 Upload GSTIN File:
               </label>
               <input
-                type="file"
-                id="gstin_certificate"
-                name="gstin_certificate"
-                onChange={handleFileChange}
-                style={inputStyle}
-                required
-              />
+              type="file"
+              onChange={(e) => {
+                handleUpload(e, "gstin_certificate");
+              }}
+              style={inputStyle}
+              required
+            />
             </div>
           </div>
           <div className="row">
@@ -689,13 +726,13 @@ const RegEdit = () => {
                 Upload Incorporation Certificate:
               </label>
               <input
-                type="file"
-                id="incorporation_certificate"
-                name="incorporation_certificate"
-                onChange={handleFileChange}
-                style={inputStyle}
-                required
-              />
+              type="file"
+              onChange={(e) => {
+                handleUpload(e, "incorporation_certificate");
+              }}
+              style={inputStyle}
+              required
+            />
             </div>
           </div>
           <div className="row">
@@ -740,13 +777,13 @@ const RegEdit = () => {
                 Upload Cancelled Cheque:
               </label>
               <input
-                type="file"
-                id="file_cancelled_cheque"
-                name="file_cancelled_cheque"
-                onChange={handleFileChange}
-                style={inputStyle}
-                required
-              />
+              type="file"
+              onChange={(e) => {
+                handleUpload(e, "cancelled_cheque");
+              }}
+              style={inputStyle}
+              required
+            />
             </div>
           </div>
           <div className="row">

@@ -49,7 +49,7 @@ function Read(props) {
                             <td>Email</td>
                             <td>{partner.username}</td>
                         </tr>
-                        <tr>
+                        {/* <tr>
                             <td>Password</td>
                             <td>
                                 {showPassword ? partner.password : "********"}
@@ -57,7 +57,7 @@ function Read(props) {
                                     {showPassword ? "Hide" : "Show"}
                                 </button>
                             </td>
-                        </tr>
+                        </tr> */}
                         <tr>
                             <td>Commission</td>
                             <td>{partner.commission}</td>

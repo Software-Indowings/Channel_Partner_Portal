@@ -155,7 +155,7 @@ function Orders(props) {
             ))}
           </tbody>
         </table>
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <div className="mt-4" style={{ position: "fixed", bottom: 50, left: 50 }}>
           <Link to="/adminpage" className="btn btn-primary me-2">
             Back
           </Link>

@@ -29,6 +29,11 @@ function Register() {
     // category: "",
     confirmPassword: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
 
   //-------------------------//
   const [email, setEmail] = useState("");
@@ -44,7 +49,7 @@ function Register() {
       await createUserWithEmailAndPassword(auth, email, password).then(
         async (userCred) => {
           const user = userCred.user;
-          const res = await axios.post("http://localhost:3307/register/", {
+          const res = await axios.post("http://server.indowings.com/register/", {
             username: email,
           });
           await sendEmailVerification(user).then(() => {
@@ -82,7 +87,7 @@ function Register() {
       <MDBContainer className="my-5" style={{ padding: "5px" }}>
         <MDBCard
           style={{
-            border: "2px solid orange",
+            border: "3px solid #EF7F1A",
             width: "100%",
             backgroundColor: "#f9f9f9",
             borderRadius: "20px",
@@ -110,14 +115,14 @@ function Register() {
                 </div>
                 <h1
                   style={{
-                    marginTop: "60px",
+                    marginTop: "30px",
                     textAlign: "center",
-                    fontSize: "34px",
+                    fontSize: "28px",
                     fontFamily: "Arial, sans-serif",
                     color: "#333",
                   }}
                 >
-                  Sign Up
+                  Create your account
                 </h1>
                 {loginStatus === "success" && (
                   <p
@@ -207,10 +212,11 @@ function Register() {
                   >
                     Password
                   </label>
+                  <div style={{ position: "relative", display: "inline-block",  width: "100%" }}>
                   <InputField
                     wrapperClass="mb-4"
                     id="password"
-                    type={"password"}
+                    type={showPassword ? "text" : "password"}
                     size="lg"
                     name="password"
                     placeholder={"Enter Password"}
@@ -225,6 +231,26 @@ function Register() {
                       fontWeight: "bold",
                     }}
                   />
+                   <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="btn btn-sm btn-outline-primary ms-2"
+                        style={{
+                          backgroundColor: "#191b30",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: "10px",
+                          padding: "5px 10px",
+                          position: "absolute",
+                          top: "45%",
+                          right: "15px", 
+                          transform: "translateY(-50%)",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {showPassword ? "Hide" : "Show"}
+                      </button>
+                  </div>
                 </div>
                 <div style={{ marginBottom: "20px", width: "80%" }}>
                   <label
@@ -240,10 +266,11 @@ function Register() {
                   >
                     Confirm Password
                   </label>
+                  <div style={{ position: "relative", display: "inline-block",  width: "100%" }}>
                   <InputField
                     wrapperClass="mb-4"
                     id="confirmPassword"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     size="lg"
                     name="confirmPassword"
                     placeholder="Confirm Password"
@@ -258,6 +285,27 @@ function Register() {
                       fontWeight: "bold",
                     }}
                   />
+                  <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="btn btn-sm btn-outline-primary ms-2"
+                        style={{
+                          backgroundColor: "#191b30",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: "10px",
+                          padding: "5px 10px",
+                          position: "absolute",
+                          top: "45%",
+                          right: "15px", 
+                          transform: "translateY(-50%)",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {showPassword ? "Hide" : "Show"}
+                      </button>
+                  </div>
+                  
                 </div>
                 <MDBBtn
                   className="mb-4 px-5"
@@ -273,9 +321,9 @@ function Register() {
                 </MDBBtn>
                 <div className="text-center mt-4">
                   <span style={{ fontSize: "16px", color: "#000" }}>
-                    Login to your exisitng account?{" "}
-                    <Link to="/portal">
-                      <u>Sign In</u>
+                    Already have an account?{" "}
+                    <Link to="/portal" style={{ color: "#EF7F1A" }}>
+                    <b>Sign In</b>
                     </Link>
                   </span>
                 </div>
