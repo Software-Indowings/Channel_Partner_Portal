@@ -45,7 +45,7 @@ function LoginPartner() {
   const handleSubmit = async () => {
     // e.preventDefault();
     try {
-      const res = await axios.post("http://server.indowings.com/login/", credentials);
+      const res = await axios.post("https://server.indowings.com/login/", credentials);
       if (res.status === 200) {
         const { username, category, commission, steps, is_verified } = res.data;
         // If steps is null, update it to 0

@@ -49,7 +49,7 @@ function Register() {
       await createUserWithEmailAndPassword(auth, email, password).then(
         async (userCred) => {
           const user = userCred.user;
-          const res = await axios.post("http://server.indowings.com/register/", {
+          const res = await axios.post("https://server.indowings.com/register/", {
             username: email,
           });
           await sendEmailVerification(user).then(() => {
