@@ -667,13 +667,23 @@ app.get("/read_order/:order_id", (req, res) => {
 });
 
 app.put("/edistatus/:order_id", (req, res) => {
-  const sql = "UPDATE orders SET `order_status`=? WHERE order_id =?";
+  const sql = "UPDATE orders SET `order_status`=?, `invoice`=? WHERE order_id =?";
   const id = req.params.order_id;
-  db.query(sql, [req.body.order_status, id], (err, result) => {
+  const { order_status, invoice } = req.body;
+  db.query(sql, [order_status, invoice, id], (err, result) => {
     if (err) return res.json({ Message: "Error in server" });
     return res.json(result);
   });
 });
+
+// app.put("/edistatus/:order_id", (req, res) => {
+//   const sql = "UPDATE orders SET `order_status`=? WHERE order_id =?";
+//   const id = req.params.order_id;
+//   db.query(sql, [req.body.order_status, id], (err, result) => {
+//     if (err) return res.json({ Message: "Error in server" });
+//     return res.json(result);
+//   });
+// });
 
 app.delete("/delete_order/:order_id", (req, res) => {
   const sql = "DELETE FROM orders WHERE order_id =?";

@@ -54,6 +54,12 @@ function Order(props) {
       });
   }, []);
 
+  // Function to format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   return (
     <div className="main-container">
       <table style={tableStyle}>
@@ -64,7 +70,7 @@ function Order(props) {
             </th>
           </tr>
         </thead>
-        </table>
+      </table>
       {/* <h1 style={{ color: "#191b30" }}>Orders List</h1> */}
       <table style={tableStyle}>
         <thead>
@@ -75,7 +81,7 @@ function Order(props) {
             <th style={thStyle}>Order Summary</th>
             <th style={thStyle}> Grand Total </th>
             <th style={thStyle}>Status</th>
-            <th style={thStyle}> Download Invoice </th>
+            <th style={thStyle}> Invoice </th>
           </tr>
         </thead>
         <tbody>
@@ -84,7 +90,7 @@ function Order(props) {
               return (
                 <tr key={order.order_id}>
                   <td style={tdStyle}>{order.order_id}</td>
-                  <td style={tdStyle}>{order.order_date}</td>
+                  <td style={tdStyle}>{formatDate(order.order_date)}</td>
                   <td style={tdStyle}>{order.order_email}</td>
 
                   <td style={tdStyle}>
@@ -101,8 +107,19 @@ function Order(props) {
                     </ul>
                   </td>
                   <td style={tdStyle}>{order.total_price}</td>
-                  <td style={tdStyle}>{order.order_status}</td>
-                  <td style={tdStyle}>Not Available</td>
+                  <td style={tdStyle}>{order.order_status}
+                  </td>
+                  <td style={tdStyle}>
+                  {order.invoice && (
+                    <a
+                      href={order.invoice}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <u>(View PAN Card)</u>
+                    </a>
+                  )}
+                  </td>
                 </tr>
               );
             } else {

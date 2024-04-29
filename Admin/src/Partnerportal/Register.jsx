@@ -22,44 +22,43 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 
+
 function Register() {
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-    // category: "",
-    confirmPassword: "",
-  });
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-
   //-------------------------//
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [user, setUser] = useState(null);
 
   const signUpAction = async () => {
     try {
-      if (credentials.password !== credentials.confirmPassword) {
+      if (password !== confirmPassword) {
         setLoginStatus("passwordMismatch");
+        alert("Passwords do not match. Please try again.");
         return;
       }
-      await createUserWithEmailAndPassword(auth, email, password).then(
-        async (userCred) => {
-          const user = userCred.user;
-          const res = await axios.post("https://server.indowings.com/register/", {
-            username: email,
-          });
-          await sendEmailVerification(user).then(() => {
-            alert("Please check your mail for verification link");
-            navigate("/portal");
-          });
-        }
+
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
       );
-    } catch (e) {
-      console.log("err->>", e);
+      const user = userCredential.user;
+      await axios.post("https://server.indowings.com/register/", {
+        username: email,
+      });
+      await sendEmailVerification(user);
+
+      alert("Please check your mail for a verification link.");
+      navigate("/portal");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("User already exists");
     }
   };
 
@@ -67,11 +66,6 @@ function Register() {
 
   const [loginStatus, setLoginStatus] = useState(null);
   const navigate = useNavigate();
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCredentials({ ...credentials, [name]: value });
-  };
 
   return (
     <div
@@ -186,8 +180,7 @@ function Register() {
                     size="lg"
                     name="username"
                     placeholder={"Enter Email"}
-                    value={credentials.username}
-                    onChange={handleInputChange}
+                    value={email}
                     handleChange={(data) => setEmail(data)}
                     required
                     style={{
@@ -212,44 +205,49 @@ function Register() {
                   >
                     Password
                   </label>
-                  <div style={{ position: "relative", display: "inline-block",  width: "100%" }}>
-                  <InputField
-                    wrapperClass="mb-4"
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    size="lg"
-                    name="password"
-                    placeholder={"Enter Password"}
-                    value={credentials.password}
-                    onChange={handleInputChange}
-                    handleChange={(data) => setPassword(data)}
-                    required
+                  <div
                     style={{
-                      fontSize: "13px",
-                      fontFamily: "Arial, sans-serif",
-                      color: "black",
-                      fontWeight: "bold",
+                      position: "relative",
+                      display: "inline-block",
+                      width: "100%",
                     }}
-                  />
-                   <button
-                        type="button"
-                        onClick={togglePasswordVisibility}
-                        className="btn btn-sm btn-outline-primary ms-2"
-                        style={{
-                          backgroundColor: "#191b30",
-                          color: "#fff",
-                          border: "none",
-                          borderRadius: "10px",
-                          padding: "5px 10px",
-                          position: "absolute",
-                          top: "45%",
-                          right: "15px", 
-                          transform: "translateY(-50%)",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {showPassword ? "Hide" : "Show"}
-                      </button>
+                  >
+                    <InputField
+                      wrapperClass="mb-4"
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      size="lg"
+                      name="password"
+                      placeholder={"Enter Password"}
+                      value={password}
+                      handleChange={(data) => setPassword(data)}
+                      required
+                      style={{
+                        fontSize: "13px",
+                        fontFamily: "Arial, sans-serif",
+                        color: "black",
+                        fontWeight: "bold",
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="btn btn-sm btn-outline-primary ms-2"
+                      style={{
+                        backgroundColor: "#191b30",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "10px",
+                        padding: "5px 10px",
+                        position: "absolute",
+                        top: "45%",
+                        right: "15px",
+                        transform: "translateY(-50%)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {showPassword ? "Hide" : "Show"}
+                    </button>
                   </div>
                 </div>
                 <div style={{ marginBottom: "20px", width: "80%" }}>
@@ -266,46 +264,50 @@ function Register() {
                   >
                     Confirm Password
                   </label>
-                  <div style={{ position: "relative", display: "inline-block",  width: "100%" }}>
-                  <InputField
-                    wrapperClass="mb-4"
-                    id="confirmPassword"
-                    type={showPassword ? "text" : "password"}
-                    size="lg"
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                    value={credentials.confirmPassword}
-                    onChange={handleInputChange}
-                    handleChange={(data) => setPassword(data)}
-                    required
+                  <div
                     style={{
-                      fontSize: "13px",
-                      fontFamily: "Arial, sans-serif",
-                      color: "black",
-                      fontWeight: "bold",
+                      position: "relative",
+                      display: "inline-block",
+                      width: "100%",
                     }}
-                  />
-                  <button
-                        type="button"
-                        onClick={togglePasswordVisibility}
-                        className="btn btn-sm btn-outline-primary ms-2"
-                        style={{
-                          backgroundColor: "#191b30",
-                          color: "#fff",
-                          border: "none",
-                          borderRadius: "10px",
-                          padding: "5px 10px",
-                          position: "absolute",
-                          top: "45%",
-                          right: "15px", 
-                          transform: "translateY(-50%)",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {showPassword ? "Hide" : "Show"}
-                      </button>
+                  >
+                    <InputField
+                      wrapperClass="mb-4"
+                      id="confirmPassword"
+                      type={showPassword ? "text" : "password"}
+                      size="lg"
+                      name="confirmPassword"
+                      placeholder="Confirm Password"
+                      value={confirmPassword}
+                      handleChange={(data) => setConfirmPassword(data)}
+                      required
+                      style={{
+                        fontSize: "13px",
+                        fontFamily: "Arial, sans-serif",
+                        color: "black",
+                        fontWeight: "bold",
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="btn btn-sm btn-outline-primary ms-2"
+                      style={{
+                        backgroundColor: "#191b30",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "10px",
+                        padding: "5px 10px",
+                        position: "absolute",
+                        top: "45%",
+                        right: "15px",
+                        transform: "translateY(-50%)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {showPassword ? "Hide" : "Show"}
+                    </button>
                   </div>
-                  
                 </div>
                 <MDBBtn
                   className="mb-4 px-5"
@@ -323,7 +325,7 @@ function Register() {
                   <span style={{ fontSize: "16px", color: "#000" }}>
                     Already have an account?{" "}
                     <Link to="/portal" style={{ color: "#EF7F1A" }}>
-                    <b>Sign In</b>
+                      <b>Sign In</b>
                     </Link>
                   </span>
                 </div>

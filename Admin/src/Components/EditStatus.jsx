@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import background from "../images/3.png";
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { imgDB } from "../firebase.js";
 
 function EditStatus(props) {
   const { order_id } = useParams();
@@ -9,7 +12,34 @@ function EditStatus(props) {
   const [order, setOrder] = useState({});
   const [values, setValues] = useState({
     order_status: "",
+    invoice: null,
   });
+  const [uploading, setUploading] = useState(false); // Added loading state
+
+  const handleUpload = (e, fieldName) => {
+    const file = e.target.files[0];
+    console.log(file);
+    const imgs = ref(imgDB, `invoice/${v4()}.${file.name.split(".").pop()}`);
+
+    // Set uploading state to true
+    setUploading(true);
+
+    uploadBytes(imgs, file)
+      .then((data) => {
+        console.log(data, "imgs");
+        getDownloadURL(data.ref).then((val) => {
+          console.log(val);
+          setValues({ ...values, [fieldName]: val });
+          // Set uploading state to false after successful upload
+          setUploading(false);
+        });
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        // Set uploading state to false in case of an error
+        setUploading(false);
+      });
+  };
 
   const handleUpdate = (event) => {
     event.preventDefault();
@@ -32,12 +62,19 @@ function EditStatus(props) {
   }, [order_id]);
 
   const handleDelete = (order_id) => {
-    axios.delete(`https://server.indowings.com/delete_order/${order_id}`)
-        .then(res => {
-            navigate('/orders');
-        })
-        .catch(err => console.log(err))
-}
+    axios
+      .delete(`https://server.indowings.com/delete_order/${order_id}`)
+      .then((res) => {
+        navigate("/orders");
+      })
+      .catch((err) => console.log(err));
+  };
+
+  // Function to format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
 
   return (
     <div
@@ -60,26 +97,21 @@ function EditStatus(props) {
         }}
       >
         <form onSubmit={handleUpdate}>
-          <h2>Update Status  <button onClick={() => handleDelete(order.order_id)} 
-          className='btn btn-danger ms-2'> Delete Order</button>
-             </h2>
-          
+          <h2>
+            Update Status{" "}
+            <button
+              onClick={() => handleDelete(order.order_id)}
+              className="btn btn-danger ms-2"
+            >
+              {" "}
+              Delete Order
+            </button>{" "}
+          </h2>
+
           <div style={{ marginBottom: "20px" }}>
             <p>Order ID: {order.order_id}</p>
             <p>Email: {order.order_email}</p>
-            <p>Date: {order.order_date}</p>
-            {/* <p>Products:</p> */}
-            {/* <ul>
-              {Array.isArray(order.product) && order.product.length > 0 ? (
-                order.product.map((product, index) => (
-                  <li key={index}>
-                    {product.name} - Quantity: {product.count}
-                  </li>
-                ))
-              ) : (
-                <li>No products found</li>
-              )}
-            </ul> */}
+            <p>Date: {formatDate(order.order_date)}</p>
             <label htmlFor="status">Change Status:</label>
             <select
               id="status"
@@ -103,6 +135,18 @@ function EditStatus(props) {
               <option value="In process">In process</option>
             </select>
           </div>
+          <div className="col-sm-6 col-md-6 col-12">
+            <label htmlFor="invoice">Upload Invoice:</label>
+            <input
+              type="file"
+              onChange={(e) => {
+                handleUpload(e, "invoice");
+              }}
+            />
+             {uploading && <p>Uploading...</p>}
+          </div>
+
+          <br />
 
           <Link
             to="/orders"
@@ -134,7 +178,7 @@ function EditStatus(props) {
           >
             Update
           </button>
-          
+         
         </form>
       </div>
     </div>

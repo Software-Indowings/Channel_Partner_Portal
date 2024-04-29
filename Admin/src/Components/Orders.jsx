@@ -68,6 +68,12 @@ function Orders(props) {
     order.order_email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Function to format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   return (
     <div
       style={{
@@ -115,7 +121,6 @@ function Orders(props) {
               <th>Date</th>
               <th>Products</th>
               <th>Total Price</th>
-              <th>Upload Invoice</th>
               <th>Status</th>
               <th>Change Status</th>
             </tr>
@@ -125,7 +130,7 @@ function Orders(props) {
               <tr key={order.order_id}>
                 <td>{order.order_id}</td>
                 <td>{order.order_email}</td>
-                <td>{order.order_date}</td>
+                <td>{formatDate(order.order_date)}</td>
 
                 <td>
                   <ul>
@@ -141,7 +146,6 @@ function Orders(props) {
                   </ul>
                 </td>
                 <td>{order.total_price}</td>
-                <td>upload invoice</td>
                 <td>{order.order_status}</td>
                 <td>
                   <Link

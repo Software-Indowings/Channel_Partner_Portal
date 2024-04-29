@@ -66,7 +66,7 @@ function ReadProducts(props) {
                         </tr>
                         <tr>
                             <th>Brochure</th>
-                            <td><a href={product.brochure} target="_blank" rel="noopener noreferrer">View Brochure</a></td>
+                            <td><a href={product.brochure} target="_blank" rel="noopener noreferrer"><u>View Brochure</u></a></td>
                         </tr>
                     </tbody>
                 </table>
