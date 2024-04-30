@@ -42,7 +42,7 @@ function ReadForm(props) {
 
   return (
     <div
-      className="d-flex flex-column vh-100 justify-content-center align-items-center"
+      // className="d-flex flex-column vh-100 justify-content-center align-items-center"
       style={{
         backgroundImage: `url(${background})`,
         backgroundSize: "cover",
@@ -192,19 +192,10 @@ function ReadForm(props) {
             ))}
           </tbody>
         </table>
-        <div className="mt-4">
+        <div className="mt-4" style={{ position: "fixed", bottom: 50, left: 50 }}>
           <Link to="/displayform" className="btn btn-primary me-2">
             Back
           </Link>
-          {/* <Link to={`/update_profiles/${profile.profile_id}`} className='btn btn-primary mx-2'>Edit</Link> */}
-          {/* <div className="d-flex justify-content-end">
-            <button
-              onClick={() => handleDelete(profile.profile_id)}
-              className="btn btn-danger"
-            >
-              Delete
-            </button>
-          </div> */}
         </div>
       </div>
     </div>

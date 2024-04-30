@@ -70,7 +70,9 @@ function AdminPage() {
     <div style={mainContainerStyle}>
       <div className="Main">
         <div className="topbar">
-          <h1>Welcome, {userName}!</h1>
+          <h1 style={{ color: "white", fontSize: "30px" }}>
+            Partner Portal Admin {userName}
+          </h1>
           <Button onClick={handleLogout} variant="contained" color="primary">
             Logout
           </Button>
@@ -91,7 +93,7 @@ function AdminPage() {
             onClick={() => navigate("/addpartner")}
           >
             <CardContent style={{ ...textStyle, color: "black" }}>
-             Partner Credentials
+              Partner Credentials
             </CardContent>
           </Card>
           <Card
@@ -124,17 +126,6 @@ function AdminPage() {
               Products
             </CardContent>
           </Card>
-          {/* <Card
-            style={cardStyle}
-            onMouseEnter={handleHover}
-            onMouseLeave={handleHoverOut}
-            onClick={() => navigate("/invoices")}
-          >
-            <CardContent style={{ ...textStyle, color: "black" }}>
-              Invoices
-            </CardContent>
-          </Card> */}
-         
           <Card
             style={cardStyle}
             onMouseEnter={handleHover}
@@ -175,7 +166,6 @@ function AdminPage() {
               Legal Documents
             </CardContent>
           </Card>
-         
         </div>
       </div>
     </div>
