@@ -120,6 +120,16 @@ function AdminPage() {
             style={cardStyle}
             onMouseEnter={handleHover}
             onMouseLeave={handleHoverOut}
+            onClick={() => navigate("/legalinfo")}
+          >
+            <CardContent style={{ ...textStyle, color: "black" }}>
+              Legal Documents
+            </CardContent>
+          </Card>
+          <Card
+            style={cardStyle}
+            onMouseEnter={handleHover}
+            onMouseLeave={handleHoverOut}
             onClick={() => navigate("/products")}
           >
             <CardContent style={{ ...textStyle, color: "black" }}>
@@ -156,16 +166,7 @@ function AdminPage() {
               Announcements
             </CardContent>
           </Card>
-          <Card
-            style={cardStyle}
-            onMouseEnter={handleHover}
-            onMouseLeave={handleHoverOut}
-            onClick={() => navigate("/legalinfo")}
-          >
-            <CardContent style={{ ...textStyle, color: "black" }}>
-              Legal Documents
-            </CardContent>
-          </Card>
+         
         </div>
       </div>
     </div>

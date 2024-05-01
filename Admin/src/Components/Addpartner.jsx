@@ -15,7 +15,7 @@ function AddPartner() {
       .then((res) => {
         if (res.data.length > 0) {
           setPartners(res.data);
-          setFilteredPartners(res.data); // Initialize filtered partners with all partners
+          setFilteredPartners(res.data); 
         }
       })
       .catch((err) => console.log(err));
