@@ -124,7 +124,6 @@ function Update_profile(props) {
 
     const formattedValues = {
       ...values,
-      // founding_date: values.founding_date.split("T")[0], // Commented out as it's not being used
     };
 
     for (const key in formattedValues) {

@@ -78,7 +78,7 @@ function DisplayForm() {
               <th>ID</th>
               <th>Email</th>
               <th>Type of Company</th>
-              <th>Name of Entity</th>
+              {/* <th>Name of Entity</th> */}
               <th>All details</th>
             </tr>
           </thead>
@@ -93,7 +93,7 @@ function DisplayForm() {
                 <td>{display.id}</td>
                 <td>{display.reg_email}</td>
                 <td>{display.type_of_company}</td>
-                <td>{display.name_of_entity}</td>
+                {/* <td>{display.name_of_entity}</td> */}
 
                 <td>
                   <Link

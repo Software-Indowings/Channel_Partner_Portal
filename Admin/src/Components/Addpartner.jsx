@@ -15,7 +15,7 @@ function AddPartner() {
       .then((res) => {
         if (res.data.length > 0) {
           setPartners(res.data);
-          setFilteredPartners(res.data); 
+          setFilteredPartners(res.data);
         }
       })
       .catch((err) => console.log(err));
@@ -77,12 +77,12 @@ function AddPartner() {
           {" "}
           Partner Credentials List
         </h3>
-        <div style={{ textAlign: "right" }}>
+        {/* <div style={{ textAlign: "right" }}>
           <Link to="/create" className="btn btn-success">
             {" "}
             Create +
           </Link>
-        </div>
+        </div> */}
         <div style={{ marginBottom: "20px" }}>
           <input
             type="text"
@@ -106,11 +106,13 @@ function AddPartner() {
             <tr>
               <th>ID</th>
               <th>Email</th>
-              <th>Category</th>
-              <th>Commission(%)</th>
-              <th>Company Details</th>
-              <th>Manage</th>
+              {/* <th>Category</th>
+              <th>Commission(%)</th> */}
+              <th>Company Profile</th>
+              <th>Company KYC</th>
               <th>Approve</th>
+              <th>Review</th>
+              <th>Manage</th>
             </tr>
           </thead>
           <tbody>
@@ -123,17 +125,33 @@ function AddPartner() {
               >
                 <td>{partner.id}</td>
                 <td>{partner.username}</td>
-                <td>{partner.category}</td>
-                <td>{partner.commission}</td>
-                <td>View Details</td>
+                {/* <td>{partner.category}</td>
+                <td>{partner.commission}</td> */}
                 <td>
-                  <Link
-                    to={`/read/${partner.id}`}
-                    className="btn btn-sm btn-info"
-                  >
-                    Manage
-                  </Link>
+                  {partner?.profile_id ? (
+                    <Link
+                      to={`/read_profile/${partner.profile_id}`}
+                      className="btn btn-sm btn-info"
+                    >
+                      View
+                    </Link>
+                  ) : (
+                    "Not Available"
+                  )}
                 </td>
+                <td>
+                  {partner?.company_id ? (
+                    <Link
+                      to={`/read_form/${partner.company_id}`}
+                      className="btn btn-sm btn-info"
+                    >
+                      View
+                    </Link>
+                  ) : (
+                    "Not Available"
+                  )}
+                </td>
+                
                 <td>
                   <button
                     onClick={() => toggleVerification(partner.id)}
@@ -142,11 +160,24 @@ function AddPartner() {
                     {partner.is_verified === 0 ? "Approve" : "Discard"}
                   </button>
                 </td>
+
+                <td>{partner.review}</td>
+                <td>
+                  <Link
+                    to={`/read/${partner.id}`}
+                    className="btn btn-sm btn-info"
+                  >
+                    Manage
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <div className="mt-4" style={{ position: "fixed", bottom: 50, left: 50 }}>
+        <div
+          className="mt-4"
+          style={{ position: "fixed", bottom: 50, left: 50 }}
+        >
           <Link to="/adminpage" className="btn btn-primary me-2">
             Back
           </Link>

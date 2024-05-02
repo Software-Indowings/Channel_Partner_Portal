@@ -8,6 +8,31 @@ function ReadForm(props) {
   const [profile, setProfile] = useState({});
   const [directors, setDirectors] = useState([]); // Corrected: Change to array
   const navigate = useNavigate();
+  const [profil, setProfil] = useState([]);
+  const [filteredProfile, setFilteredProfile] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("https://server.indowings.com/allpartnersprofile/")
+      .then((res) => {
+        if (res.data.length > 0) {
+          setProfil(res.data);
+          setFilteredProfile(res.data);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  // Filter profile based on search query
+  useEffect(() => {
+    const filtered = profil.filter((partner_profile) =>
+      partner_profile.reg_email
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+    );
+    setFilteredProfile(filtered);
+  }, [searchQuery, profil]);
 
   useEffect(() => {
     axios
@@ -77,7 +102,9 @@ function ReadForm(props) {
             </tr>
             <tr>
               <th>Company Name:</th>
-              <td>{profile.name_of_entity}</td>
+              {filteredProfile.map((partners_profile, index) => (
+                <td>{partners_profile.company_name}</td>
+              ))}
             </tr>
             <tr>
               <th>Registered Email ID:</th>
@@ -85,37 +112,45 @@ function ReadForm(props) {
             </tr>
             <tr>
               <th>PAN Number:</th>
-              <td>{profile.pan_number}
-              <br/>
-              <a
+              <td>
+                {profile.pan_number}
+                <br />
+                <a
                   href={profile.pan_card}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                 <u>(View PAN Card)</u> 
-                </a></td>
+                  <u>(View PAN Card)</u>
+                </a>
+              </td>
             </tr>
             <tr>
               <th>GSTIN:</th>
-              <td>{profile.gstin}<br/>
-              <a
+              <td>
+                {profile.gstin}
+                <br />
+                <a
                   href={profile.gstin_certificate}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                 <u>(View GSTIN Certificate)</u> 
-                </a></td>
+                  <u>(View GSTIN Certificate)</u>
+                </a>
+              </td>
             </tr>
             <tr>
               <th>Date of Incorporation:</th>
-              <td>{profile.incorporation_date?.split("T")[0]}<br/>
-              <a
+              <td>
+                {profile.incorporation_date?.split("T")[0]}
+                <br />
+                <a
                   href={profile.incorporation_certificate}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                 <u>(View Incorporation Certificate)</u> 
-                </a></td>
+                  <u>(View Incorporation Certificate)</u>
+                </a>
+              </td>
             </tr>
             <tr>
               <th>Account Number:</th>
@@ -131,14 +166,17 @@ function ReadForm(props) {
             </tr>
             <tr>
               <th>IFSC Code:</th>
-              <td>{profile.ifsc_code}<br/>
-              <a
+              <td>
+                {profile.ifsc_code}
+                <br />
+                <a
                   href={profile.cancelled_cheque}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                 <u>(View Cancelled Cheque)</u> 
-                </a></td>
+                  <u>(View Cancelled Cheque)</u>
+                </a>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -192,8 +230,11 @@ function ReadForm(props) {
             ))}
           </tbody>
         </table>
-        <div className="mt-4" style={{ position: "fixed", bottom: 50, left: 50 }}>
-          <Link to="/displayform" className="btn btn-primary me-2">
+        <div
+          className="mt-4"
+          style={{ position: "fixed", bottom: 50, left: 50 }}
+        >
+          <Link to="/addpartner" className="btn btn-primary me-2">
             Back
           </Link>
         </div>

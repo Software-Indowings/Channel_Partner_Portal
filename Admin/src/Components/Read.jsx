@@ -66,12 +66,20 @@ function Read(props) {
                             <td>Category</td>
                             <td>{partner.category}</td>
                         </tr>
+                        <tr>
+                            <td>Steps</td>
+                            <td>{partner.steps}</td>
+                        </tr>
+                        <tr>
+                            <td>Review</td>
+                            <td>{partner.review}</td>
+                        </tr>
                     </tbody>
                 </table>
                 <div className="text-center">
                     <Link to="/addpartner" className='btn btn-primary me-2'>Back</Link>
                     <Link to={`/edit/${partner.id}`} className='btn btn-info'>Edit</Link>
-                    <button onClick={() => handleDelete(partner.id)} className='btn btn-danger ms-2'>Delete</button>
+                    {/* <button onClick={() => handleDelete(partner.id)} className='btn btn-danger ms-2'>Delete</button> */}
                 </div>
             </div>
         </div>

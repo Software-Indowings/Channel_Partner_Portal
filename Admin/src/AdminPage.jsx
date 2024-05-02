@@ -96,7 +96,7 @@ function AdminPage() {
               Partner Credentials
             </CardContent>
           </Card>
-          <Card
+          {/* <Card
             style={cardStyle}
             onMouseEnter={handleHover}
             onMouseLeave={handleHoverOut}
@@ -115,7 +115,7 @@ function AdminPage() {
             <CardContent style={{ ...textStyle, color: "black" }}>
               Company KYC Form
             </CardContent>
-          </Card>
+          </Card> */}
           <Card
             style={cardStyle}
             onMouseEnter={handleHover}

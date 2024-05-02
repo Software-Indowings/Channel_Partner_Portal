@@ -153,7 +153,7 @@ app.get("/read/:id", (req, res) => {
 
 app.put("/update/:id", (req, res) => {
   const sql =
-    "UPDATE partner SET `username`=?, `password`=?, `category`=?, `commission`=? WHERE id =?";
+    "UPDATE partner SET `username`=?, `password`=?, `category`=?, `commission`=?, `steps`=?, `review`=? WHERE id =?";
   const id = req.params.id;
   db.query(
     sql,
@@ -162,6 +162,8 @@ app.put("/update/:id", (req, res) => {
       req.body.password,
       req.body.category,
       req.body.commission,
+      req.body.steps,
+      req.body.review,
       id,
     ],
     (err, result) => {
@@ -391,7 +393,7 @@ app.post("/updateStep", (req, res) => {
 app.post("/profile_insert", (req, res) => {
   const reg_email = req.body.reg_email;
   const sqlSelect = "SELECT * FROM partners_profile WHERE reg_email = ?";
-  db.query(sqlSelect, [reg_email], (err, result) => {
+  db.query(sqlSelect, [reg_email],async (err, result) => {
     if (err) {
       return res.json(err);
     }
@@ -444,7 +446,36 @@ app.post("/profile_insert", (req, res) => {
         req.body.industries,
         reg_email,
       ];
-      db.query(sqlInsert, [values], (err, result) => {
+      await db.query(sqlInsert, [values], async(err, result) => {
+        const profile_id = result.insertId;
+        
+        const sqlSelectPartnerId = "SELECT id FROM partner WHERE username = ?";
+
+        await db.query(sqlSelectPartnerId, [req.body.reg_email],async (err, partnerResult) => {
+          if (err) {
+            console.error("Error fetching partner id:", err);
+            return res.status(500).json({ success: false, message: "Error fetching partner id." });
+          }
+    
+          if (partnerResult.length === 0) {
+            return res.status(404).json({ success: false, message: "User not found." });
+          }
+    
+          const partnerId = partnerResult[0].id;
+    
+          // Update the partner table with the profile_id
+          const sqlUpdatePartner = "UPDATE partner SET profile_id = ? WHERE id = ?";
+          await db.query(sqlUpdatePartner, [profile_id, partnerId], (err, updateResult) => {
+            if (err) {
+              console.error("Error updating partner profile_id:", err);
+              return res.status(500).json({ success: false, message: "Error updating partner profile_id." });
+            }
+    
+            console.log("Profile_id updated in partner table.");
+           
+          });
+        });
+
         if (err) {
           return res.json(err);
         }
@@ -805,15 +836,36 @@ app.post("/submitform", async (req, res) => {
           req.body.BankName,
           req.body.BranchName,
         ];
-        await db.query(sqlInsertCompany, valuesCompany, (err, result) => {
+        await db.query(sqlInsertCompany, valuesCompany,async (err, result) => {
           if (err) {
             console.log("err in adding a company-->", err);
             return res.json(err);
           }
           // Insert into directors table
           const company_id = result.insertId;
-
+          
           const directors = req.body.directors;
+// ============================================================
+          const sqlSelectPartnerId = "SELECT id FROM partner WHERE username = ?";
+
+          await db.query(sqlSelectPartnerId, [req.body.reg_email], async (err, result) => {
+            if (err) {
+              console.log("err in fetching partner id-->", err);
+              return res.json(err);
+            }
+            const partnerId = result[0].id;
+            const sqlUpdatePartner = "UPDATE partner SET company_id = ? WHERE id = ?";
+            await db.query(sqlUpdatePartner, [company_id, partnerId], (err, result) => {
+              if (err) {
+                console.log("err in updating partner company_id-->", err);
+                return res.json(err);
+              }
+              console.log("Company_id updated in partner table.");
+              // return res.json({ success: true, message: "Company_id updated in partner table." });
+            });
+          });
+// ================================================================
+
           
           Object.keys(directors).map(async (dir, ind) => {
             const sqlInsertDirectors =
@@ -846,6 +898,8 @@ app.post("/submitform", async (req, res) => {
 
           return res.json({ message: "Data inserted successfully." });
         });
+
+        
       } else {
         console.log("else")
         // If the user with reg_email already exists, perform an update

@@ -59,8 +59,10 @@ function Registration_from(props) {
       console.log(data, "imgs");
       getDownloadURL(data.ref).then((val) => {
         console.log(val);
-        const directorIndex = parseInt(fieldName.split('_').pop());
-        const updatedField = fieldName.includes('aadhar') ? 'aadhar_file' : 'pan_file';
+        const directorIndex = parseInt(fieldName.split("_").pop());
+        const updatedField = fieldName.includes("aadhar")
+          ? "aadhar_file"
+          : "pan_file";
         setDirectors((prevDirectors) => ({
           ...prevDirectors,
           [`Dir_${directorIndex}`]: {
@@ -71,7 +73,7 @@ function Registration_from(props) {
       });
     });
   };
-  
+
   useEffect(() => {
     if (user) {
       setValues((prevValues) => ({
@@ -163,6 +165,7 @@ function Registration_from(props) {
     const formattedValues = {
       ...values,
       directors: directors,
+      user: user.username,
     };
 
     finalData.append("values", formattedValues);
@@ -381,56 +384,20 @@ function Registration_from(props) {
                 value={directors[`Dir_${i}`]?.PAN}
                 onChange={(e) => {
                   const inputValue = e.target.value.toUpperCase();
-                  const alphaRegex = /^[A-Z]+$/;
+                  const alphaNumericRegex = /^[A-Z0-9]*$/;
+                  const len = inputValue.length;
 
-                  if (inputValue === "") {
+                  if (len <= 10 && alphaNumericRegex.test(inputValue)) {
                     setDirectors({
                       ...directors,
                       [`Dir_${i}`]: {
                         ...directors[`Dir_${i}`],
-                        PAN: "",
+                        PAN: inputValue,
                       },
                     });
-                  } else {
-                    const len = inputValue.length;
-
-                    if (len <= 5 && alphaRegex.test(inputValue[len - 1])) {
-                      setDirectors({
-                        ...directors,
-                        [`Dir_${i}`]: {
-                          ...directors[`Dir_${i}`],
-                          PAN: inputValue,
-                        },
-                      });
-                    } else if (
-                      len > 5 &&
-                      len <= 9 &&
-                      !isNaN(Number(inputValue[len - 1]))
-                    ) {
-                      setDirectors({
-                        ...directors,
-                        [`Dir_${i}`]: {
-                          ...directors[`Dir_${i}`],
-                          PAN: inputValue,
-                        },
-                      });
-                    } else if (
-                      len === 10 &&
-                      alphaRegex.test(inputValue[len - 1])
-                    ) {
-                      setDirectors({
-                        ...directors,
-                        [`Dir_${i}`]: {
-                          ...directors[`Dir_${i}`],
-                          PAN: inputValue,
-                        },
-                      });
-                    }
                   }
                 }}
                 style={inputStyle}
-                pattern="[A-Za-z0-9]{10}"
-                title="Should be 10 characters/digits"
                 maxLength={10}
                 required
               />
@@ -610,33 +577,17 @@ function Registration_from(props) {
               name="pan_number"
               value={values.pan_number}
               onChange={(e) => {
-                let alphaRegex = /^[a-zA-Z]+$/;
-                if (e.target.value === "") {
-                  setValues({ ...values, pan_number: "" });
-                } else {
-                  const straw = String(e.target.value).toUpperCase();
-                  let len = straw.length;
-                  if (len < 6) {
-                    let char = straw.slice(len - 1, len);
-                    if (alphaRegex.test(char)) {
-                      setValues({ ...values, pan_number: straw });
-                    }
-                  } else if (len >= 6 && len < 10) {
-                    let char = straw.slice(len - 1, len);
-                    if (!isNaN(Number(char))) {
-                      setValues({ ...values, pan_number: straw });
-                    }
-                  } else if (len === 10) {
-                    let char = straw.slice(len - 1, len);
-                    if (alphaRegex.test(char)) {
-                      setValues({ ...values, pan_number: straw });
-                    }
-                  }
+                const inputValue = e.target.value.toUpperCase();
+                const alphaNumericRegex = /^[A-Za-z0-9]*$/;
+
+                if (
+                  inputValue.length <= 10 &&
+                  alphaNumericRegex.test(inputValue)
+                ) {
+                  setValues({ ...values, pan_number: inputValue });
                 }
               }}
               style={inputStyle}
-              pattern="[A-Za-z0-9]{10}"
-              title="Should be 10 characters/digits"
               maxLength={10}
               required
             />
@@ -668,58 +619,15 @@ function Registration_from(props) {
               name="gstin"
               value={values.gstin}
               onChange={(e) => {
-                let alphaRegex = /^[a-zA-Z]+$/;
+                const inputValue = e.target.value.toUpperCase();
+                const alphaNumericRegex = /^[A-Za-z0-9]*$/;
+                const len = inputValue.length;
 
-                if (e.target.value === "") {
-                  setValues({ ...values, gstin: "" });
-                } else {
-                  const straw = String(e.target.value).toUpperCase();
-                  let len = straw.length;
-
-                  if (len < 3) {
-                    let char = straw.slice(len - 1, len);
-
-                    if (!isNaN(Number(char))) {
-                      setValues({ ...values, gstin: straw });
-                    }
-                  }
-
-                  if (len >= 3 && len < 8) {
-                    let char = straw.slice(len - 1, len);
-                    if (alphaRegex.test(char)) {
-                      setValues({ ...values, gstin: straw });
-                    }
-                  } else if (len >= 8 && len < 12) {
-                    let char = straw.slice(len - 1, len);
-                    if (!isNaN(Number(char))) {
-                      setValues({ ...values, gstin: straw });
-                    }
-                  } else if (len === 12) {
-                    let char = straw.slice(len - 1, len);
-                    if (alphaRegex.test(char)) {
-                      setValues({ ...values, gstin: straw });
-                    }
-                  } else if (len === 13) {
-                    let char = straw.slice(len - 1, len);
-                    if (!isNaN(Number(char))) {
-                      setValues({ ...values, gstin: straw });
-                    }
-                  } else if (len === 14) {
-                    let char = straw.slice(len - 1, len);
-                    if (alphaRegex.test(char)) {
-                      setValues({ ...values, gstin: straw });
-                    }
-                  } else if (len === 15) {
-                    let char = straw.slice(len - 1, len);
-                    if (!isNaN(Number(char))) {
-                      setValues({ ...values, gstin: straw });
-                    }
-                  }
+                if (len <= 15 && alphaNumericRegex.test(inputValue)) {
+                  setValues({ ...values, gstin: inputValue });
                 }
               }}
               style={inputStyle}
-              pattern="[A-Za-z0-9]{15}"
-              title="Should be 15 characters/digits"
               maxLength={15}
               required
             />
@@ -853,34 +761,15 @@ function Registration_from(props) {
               name="ifsc_code"
               value={values.ifsc_code}
               onChange={(e) => {
-                let alphaRegex = /^[a-zA-Z]+$/;
-                //console.log(e.target.value);
-                if (e.target.value === "") {
-                  setValues({ ...values, ifsc_code: "" });
-                } else {
-                  const straw = String(e.target.value).toUpperCase();
-                  let len = straw.length;
-                  // console.log(len);
-                  if (len < 5) {
-                    // all capitals and must be english letter
-                    let char = straw.slice(len - 1, len);
-                    //console.log("sasa"+char);
-                    if (alphaRegex.test(char)) {
-                      setValues({ ...values, ifsc_code: straw });
-                    }
-                  } else if (len >= 5 && len < 12) {
-                    // must be a number on slicing
-                    let char = straw.slice(len - 1, len);
-                    //console.log("logging"+char);
-                    if (!isNaN(Number(char))) {
-                      setValues({ ...values, ifsc_code: straw });
-                    }
-                  }
+                const inputValue = e.target.value.toUpperCase();
+                const alphaNumericRegex = /^[A-Za-z0-9]*$/;
+                const len = inputValue.length;
+
+                if (len <= 11 && alphaNumericRegex.test(inputValue)) {
+                  setValues({ ...values, ifsc_code: inputValue });
                 }
               }}
               style={inputStyle}
-              pattern="[A-Za-z0-9]{11}"
-              title="Should be 11 characters/digits"
               maxLength={11}
               required
             />

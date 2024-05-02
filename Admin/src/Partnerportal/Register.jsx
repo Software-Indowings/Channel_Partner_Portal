@@ -58,9 +58,11 @@ function Register() {
       navigate("/portal");
     } catch (error) {
       console.error("Error:", error);
-      alert("User already exists");
+      alert("Error: " + error);
     }
   };
+
+  
 
   //-------------------------//
 
@@ -140,7 +142,7 @@ function Register() {
                     Registration Failed!
                   </p>
                 )}
-                {loginStatus === "passwordMismatch" && (
+                {/* {loginStatus === "passwordMismatch" && (
                   <p
                     style={{
                       color: "red",
@@ -150,7 +152,7 @@ function Register() {
                   >
                     Passwords do not match.
                   </p>
-                )}
+                )} */}
                 <br />
 
                 <div

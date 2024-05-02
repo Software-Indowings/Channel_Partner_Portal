@@ -116,7 +116,7 @@ function Order(props) {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <u>(View PAN Card)</u>
+                      <u>(View Invoice)</u>
                     </a>
                   )}
                   </td>

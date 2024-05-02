@@ -15,7 +15,7 @@ function Admin_profile() {
       .then((res) => {
         if (res.data.length > 0) {
           setProfile(res.data);
-          setFilteredProfile(res.data); // Initialize filtered profile with all profiles
+          setFilteredProfile(res.data); 
         }
       })
       .catch((err) => console.log(err));

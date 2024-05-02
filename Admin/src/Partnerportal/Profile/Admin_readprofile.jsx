@@ -111,17 +111,17 @@ function ReadProfile(props) {
           </tbody>
         </table>
         <div className="mt-4">
-          <Link to="/admin_profile" className="btn btn-primary me-2">
+          <Link to="/addpartner" className="btn btn-primary me-2">
             Back
           </Link>
           {/* <Link to={`/update_profiles/${profile.profile_id}`} className='btn btn-primary mx-2'>Edit</Link> */}
           <div className="d-flex justify-content-end">
-            <button
+            {/* <button
               onClick={() => handleDelete(profile.profile_id)}
               className="btn btn-danger"
             >
               Delete
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
