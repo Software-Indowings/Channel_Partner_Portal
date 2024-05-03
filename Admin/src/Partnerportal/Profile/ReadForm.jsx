@@ -102,14 +102,20 @@ function ReadForm(props) {
             </tr>
             <tr>
               <th>Company Name:</th>
-              {filteredProfile.map((partners_profile, index) => (
-                <td>{partners_profile.company_name}</td>
-              ))}
+              {filteredProfile
+                .filter(
+                  (partners_profile) =>
+                    partners_profile.reg_email === profile.reg_email
+                )
+                .map((partners_profile, index) => (
+                  <td key={index}>{partners_profile.company_name}</td>
+                ))}
             </tr>
             <tr>
               <th>Registered Email ID:</th>
               <td>{profile.reg_email}</td>
             </tr>
+
             <tr>
               <th>PAN Number:</th>
               <td>

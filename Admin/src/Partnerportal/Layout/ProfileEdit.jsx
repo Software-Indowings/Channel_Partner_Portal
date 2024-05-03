@@ -635,10 +635,12 @@ const ProfileEdit = () => {
                 }
                 required
               >
-                <option value="">Select State</option>
+                <option value="">Select</option>
                 <option value="agriculture">Agriculture</option>
                 <option value="surveillance">Surveillance</option>
-                <option value="cinematics">Cinematics</option>
+                <option value="Mapping">Mapping</option>
+                <option value="Survey">Survey</option>
+                <option value="Education/Training">Education/Training</option>
               </select>
             </div>
           </div>
