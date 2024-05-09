@@ -1,45 +1,71 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import background from "../../images/3.png";
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { imgDB } from "../../firebase.js";
 
 function Create_Info() {
   const [values, setValues] = useState({
     email: "",
     document: null,
-    documentURL: "", 
   });
 
   const navigate = useNavigate();
 
+  const handleUpload = (e, fieldName) => {
+    const file = e.target.files[0];
+    console.log(file);
+    const imgs = ref(imgDB, `Files/${v4()}.${file.name.split(".").pop()}`);
+    uploadBytes(imgs, file).then((data) => {
+      console.log(data, "imgs");
+      getDownloadURL(data.ref).then((val) => {
+        console.log(val);
+        setValues({ ...values, [fieldName]: val });
+      });
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("info_email", values.email);
-    formData.append("document", values.document);
-
+  
+    const requestData = {
+      info_email: values.email,
+      document: values.document
+    };
+  
     axios
-      .post("https://server.indowings.com/create-info", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      .post("https://server.indowings.com/create-info", requestData)
       .then((res) => {
         console.log(res);
         navigate("/legalinfo");
       })
       .catch((err) => console.log(err));
   };
+  
 
   const handleFileChange = (e) => {
     setValues({
       ...values,
       document: e.target.files[0],
-      documentURL: URL.createObjectURL(e.target.files[0]), 
+      documentURL: URL.createObjectURL(e.target.files[0]),
     });
   };
 
   return (
-    <div className="d-flex vh-100 justify-content-center align-items-center">
+    <div
+      style={{
+        backgroundImage: `url(${background})`,
+        backgroundSize: "cover",
+        minHeight: "100vh",
+        width: "max",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "20px",
+      }}
+    >
       <div className="w-50 bg-white rounded p-5">
         <form onSubmit={handleSubmit}>
           <h2 className="mb-4">Add Legal Document</h2>
@@ -63,10 +89,10 @@ function Create_Info() {
             </label>
             <input
               type="file"
-              id="document"
-              name="document"
+              onChange={(e) => {
+                handleUpload(e, "document");
+              }}
               className="form-control"
-              onChange={handleFileChange}
             />
           </div>
           {/* Display blob URL as PDF or image */}

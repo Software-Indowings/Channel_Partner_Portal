@@ -41,9 +41,10 @@ function Waiting(props) {
           <button
         style={{
           position: "absolute",
-          top: "10px", 
-          right: "10px",
-          padding: "8px 16px",
+          top: "15px", 
+          right: "15px",
+          padding: "6px 8px",
+          fontSize: "14px",
           cursor: "pointer",
           borderBottom: "1px solid #ccc",
           display: "flex",

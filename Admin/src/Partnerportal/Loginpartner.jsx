@@ -45,7 +45,10 @@ function LoginPartner() {
   const handleSubmit = async () => {
     // e.preventDefault();
     try {
-      const res = await axios.post("https://server.indowings.com/login/", credentials);
+      const res = await axios.post(
+        "https://server.indowings.com/login/",
+        credentials
+      );
       if (res.status === 200) {
         const { username, category, commission, steps, is_verified } = res.data;
         // If steps is null, update it to 0
@@ -79,17 +82,18 @@ function LoginPartner() {
               navigate("/displayregform");
             } else if (updatedSteps === 4) {
               if (is_verified) {
-                navigate("/esign");
-              } else {
-                navigate("/waiting");
-              }
-            } else if (updatedSteps === 5) {
-              if (is_verified) {
                 navigate("/layout");
               } else {
                 navigate("/waiting");
               }
-            }
+            } 
+            // else if (updatedSteps === 5) {
+            //   if (is_verified) {
+            //     navigate("/layout");
+            //   } else {
+            //     navigate("/waiting");
+            //   }
+            // }
           } else {
             alert("Please verify your email");
           }
@@ -246,7 +250,13 @@ function LoginPartner() {
                     >
                       <b>Password</b>
                     </label>
-                    <div style={{ position: "relative", display: "inline-block",  width: "100%" }}>
+                    <div
+                      style={{
+                        position: "relative",
+                        display: "inline-block",
+                        width: "100%",
+                      }}
+                    >
                       <MDBInput
                         wrapperClass="mb-4"
                         id="password"
@@ -259,9 +269,9 @@ function LoginPartner() {
                         required
                         style={{
                           fontSize: "16px",
-                        fontFamily: "Arial, sans-serif",
-                        color: "#333",
-                        borderRadius: "10px",
+                          fontFamily: "Arial, sans-serif",
+                          color: "#333",
+                          borderRadius: "10px",
                         }}
                       />
                       <button

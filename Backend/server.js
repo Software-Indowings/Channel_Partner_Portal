@@ -59,6 +59,13 @@ db.connect((err) => {
 //   });
 // });
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Allow requests from all origins
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Allow these HTTP methods
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allow these headers
+  next();
+});
+
 // Login Partner
 app.post("/login", async (req, res) => {
   console.log('body-->',req.body);
@@ -443,11 +450,12 @@ app.post("/profile_insert", (req, res) => {
         req.body.key_email,
         req.body.key_phone,
         req.body.key_position,
-        req.body.industries,
+        JSON.stringify(req.body.industries),
         reg_email,
       ];
       await db.query(sqlInsert, [values], async(err, result) => {
-        const profile_id = result.insertId;
+        const profile_id = result?.insertId;
+        console.log('profile_id--->', profile_id);
         
         const sqlSelectPartnerId = "SELECT id FROM partner WHERE username = ?";
 
@@ -497,16 +505,13 @@ app.get("/get-document/:id", (req, res) => {
         console.error(err);
         res.status(500).send("Error fetching document");
       } else {
-        // Assuming the document is stored as a file path in the database
         const filePath = results[0].document;
 
-        // Read the file asynchronously
         fs.readFile(filePath, (err, data) => {
           if (err) {
             console.error(err);
             res.status(500).send("Error reading document");
           } else {
-            // Convert the file data to a base64-encoded string
             const base64Data = data.toString("base64");
             const pdfContent = `data:application/pdf;base64,${base64Data}`;
             res.send(pdfContent);
@@ -517,58 +522,42 @@ app.get("/get-document/:id", (req, res) => {
   );
 });
 
-// Initialize multer with the storage configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads"); // Define the destination folder for uploaded files
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname); // Keep the original filename
-  },
-});
-
-const upload = multer({ storage: storage });
-
-// Handle file upload and create legal info
-app.post("/create-info", upload.single("document"), (req, res) => {
-  const { info_email } = req.body;
-  const documentPath = req.file.path; // Get the path of the uploaded file
+app.post("/create-info", (req, res) => {
+  const { info_email, document } = req.body;
 
   const INSERT_INFO_QUERY = `INSERT INTO legal_info (info_email, document) VALUES (?, ?)`;
-  db.query(INSERT_INFO_QUERY, [info_email, documentPath], (err, result) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("Error creating legal info");
-    } else {
-      res.status(201).send("Legal info created successfully");
+  
+  db.query(INSERT_INFO_QUERY, [info_email, document], (error, results, fields) => {
+    if (error) {
+      console.error('Error inserting data: ', error);
+      res.status(500).json({ error: 'Error inserting data' });
+      return;
     }
+    console.log('Data inserted successfully');
+    res.status(200).json({ message: 'Data inserted successfully' });
   });
 });
 
-// Serve uploaded files statically
-app.use("/uploads", express.static("uploads"));
 
-const uploadPdf = multer({ dest: "uploadPdf/" });
+// app.post("/uploadPdf", uploadPdf.single("file"), (req, res) => {
+//   const info_email = req.body.email;
+//   const documentPath = req.file.path;
 
-app.post("/uploadPdf", uploadPdf.single("file"), (req, res) => {
-  const info_email = req.body.email;
-  const documentPath = req.file.path;
-
-  try {
-    const sql = "INSERT INTO legal_info (info_email, document) VALUES (?, ?)";
-    db.query(sql, [info_email, documentPath], (err, result) => {
-      if (err) {
-        console.error("Error uploading PDF to MySQL:", err);
-        res.status(500).send("Error uploading PDF");
-        return;
-      }
-      console.log("PDF uploaded to MySQL");
-      res.status(200).send("PDF uploaded successfully");
-    });
-  } catch (e) {
-    console.log("err--->", e);
-  }
-});
+//   try {
+//     const sql = "INSERT INTO legal_info (info_email, document) VALUES (?, ?)";
+//     db.query(sql, [info_email, documentPath], (err, result) => {
+//       if (err) {
+//         console.error("Error uploading PDF to MySQL:", err);
+//         res.status(500).send("Error uploading PDF");
+//         return;
+//       }
+//       console.log("PDF uploaded to MySQL");
+//       res.status(200).send("PDF uploaded successfully");
+//     });
+//   } catch (e) {
+//     console.log("err--->", e);
+//   }
+// });
 
 // Get All Legal Info
 app.get("/legal-info", (req, res) => {
@@ -578,16 +567,11 @@ app.get("/legal-info", (req, res) => {
       console.error(err);
       res.status(500).send("Error fetching legal info");
     } else {
-      // Convert blob data to Base64 encoding
-      const legalInfoWithBase64 = results.map((info) => ({
-        ...info,
-        document: Buffer.from(info.document).toString("base64"),
-      }));
-
-      res.status(200).json(legalInfoWithBase64);
+      res.status(200).json(results);
     }
   });
 });
+
 
 //Target Handling
 

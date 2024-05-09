@@ -12,8 +12,7 @@ function File() {
   const [data, setData] = useState([]);
 
   const handleUpload = (e) => {
-    setUploading(true); // Start uploading
-
+    setUploading(true); 
     
     const fileRef = ref(imgDB, `Files/${v4()}.${file.name.split('.').pop()}`);
   

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { adminLogout } from "./features/userSlice";
 import logo from "./images/4.png";
@@ -116,6 +116,21 @@ function AdminPage() {
               Company KYC Form
             </CardContent>
           </Card> */}
+          <Link
+            to="https://contracting-dashboard-preproduction.signzy.app/ots/login"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Card
+              style={cardStyle}
+              onMouseEnter={handleHover}
+              onMouseLeave={handleHoverOut}
+            >
+              <CardContent style={{ ...textStyle, color: "black" }}>
+                Contracts
+              </CardContent>
+            </Card>
+          </Link>
           <Card
             style={cardStyle}
             onMouseEnter={handleHover}
@@ -166,7 +181,6 @@ function AdminPage() {
               Announcements
             </CardContent>
           </Card>
-         
         </div>
       </div>
     </div>

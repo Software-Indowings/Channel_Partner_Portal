@@ -146,7 +146,7 @@ function Update(props) {
             />
           </div>
           <div style={{ marginBottom: "20px" }}>
-            <label htmlFor="steps">Steps(1: profile, 3: KYC, 5: dashboard)</label>
+            <label htmlFor="steps">Steps(1: profile, 3: KYC, 4: dashboard)</label>
             <input
               type="number" 
               id="steps"

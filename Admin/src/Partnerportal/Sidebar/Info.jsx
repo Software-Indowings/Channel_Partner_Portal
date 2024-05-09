@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 
 function Info() {
-
   const tableStyle = {
     borderCollapse: "collapse",
     width: "100%",
@@ -62,17 +61,13 @@ function Info() {
                         <tr>
                           <th>Document:</th>
                           <td>
-                            {info.document ? (
-                              <button
-                                onClick={() =>
-                                  openDocumentInNewWindow(info.document)
-                                }
-                              >
-                                Open Document
-                              </button>
-                            ) : (
-                              "No document available"
-                            )}
+                            <a
+                              href={legal_info.document}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <u>(View Contract)</u>
+                            </a>
                           </td>
                         </tr>
                       </tbody>

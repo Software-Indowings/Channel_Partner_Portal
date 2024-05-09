@@ -3,13 +3,23 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import logo from "../../images/partner.png";
 import background from "../../images/3.png";
+import { FaRegSquare, FaCheckSquare } from "react-icons/fa";
 import { logout, selectUser } from "../../features/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase.js";
 import { signOut } from "firebase/auth";
 
+const options = [
+  "Mapping",
+  "Agriculture",
+  "surveillance",
+  "Survey",
+  "Education/Training",
+];
+
 function Update_profile(props) {
   const [profile, setProfile] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const navigate = useNavigate();
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -117,11 +127,10 @@ function Update_profile(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    e.preventDefault();
-
+    
     const formattedValues = {
       ...values,
+      industries: selectedOptions,
     };
 
     for (const key in formattedValues) {
@@ -131,13 +140,14 @@ function Update_profile(props) {
         return;
       }
     }
+    console.log("run");
     await Promise.all([
       axios
         .post("https://server.indowings.com/profile_insert/", formattedValues)
         .then((res) => {
-          console.log(res);
+          console.log("success-->", res);
         })
-        .catch((err) => console.log(err)),
+        .catch((err) => console.log("err in profile_insert api-->", err)),
       axios
         .post("https://server.indowings.com/updateStep", {
           count: 1,
@@ -146,14 +156,50 @@ function Update_profile(props) {
         .then((res) => {
           console.log(res);
         })
-        .catch((err) => console.log(err)),
+        .catch((err) => console.log("err in updateStep api-->", err)),
     ])
       .then(() => {
-        navigate("/partnerprofile");
+         navigate("/partnerprofile");
       })
       .catch((e) => {
         console.log("err-->", e);
       });
+  };
+
+  const renderCheckBox = () => {
+    return options.map((item, ind) => {
+      return (
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <div
+            onClick={() => {
+              if (selectedOptions.includes(item)) {
+                setSelectedOptions(
+                  selectedOptions.filter((obj) => {
+                    return obj !== item;
+                  })
+                );
+              } else {
+                setSelectedOptions([...selectedOptions, item]);
+              }
+            }}
+          >
+            {selectedOptions.includes(item) ? (
+              <FaCheckSquare />
+            ) : (
+              <FaRegSquare />
+            )}
+          </div>
+          <div style={{ marginLeft: 12 }}>{item}</div>
+        </div>
+      );
+    });
   };
 
   return (
@@ -172,9 +218,10 @@ function Update_profile(props) {
       <button
         style={{
           position: "absolute",
-          top: "10px",
-          right: "10px",
-          padding: "8px 16px",
+          top: "15px",
+          right: "15px",
+          padding: "6px 8px",
+          fontSize: "14px",
           cursor: "pointer",
           borderBottom: "1px solid #ccc",
           display: "flex",
@@ -221,9 +268,9 @@ function Update_profile(props) {
               style={{
                 textAlign: "center",
                 marginBottom: "20px",
-                fontSize: "24px",
+                fontSize: "22px",
                 fontFamily: "Arial, Helvetica, sans-serif",
-                fontWeight: "bold",
+                // fontWeight: "bold",
                 color: "#000",
               }}
             >
@@ -1108,25 +1155,9 @@ function Update_profile(props) {
             </div>
             <div className="mb-3">
               <label htmlFor="Industries" className="form-label">
-                Focus Industries:
+               <b>Focus Industries:</b> 
               </label>
-              <select
-                id="Industries"
-                name="Industries"
-                className="form-select"
-                value={values.industries}
-                onChange={(e) =>
-                  setValues({ ...values, industries: e.target.value })
-                }
-                required
-              >
-                <option value="">Select</option>
-                <option value="agriculture">Agriculture</option>
-                <option value="surveillance">Surveillance</option>
-                <option value="Mapping">Mapping</option>
-                <option value="Survey">Survey</option>
-                <option value="Education/Training">Education/Training</option>
-              </select>
+              {renderCheckBox()}
             </div>
           </div>
         </div>

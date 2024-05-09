@@ -9,7 +9,7 @@ function LegalInfo(props) {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    axios
+    axios  
       .get(`https://server.indowings.com/legal-info`)
       .then((res) => {
         setLegalInfo(res.data);
@@ -26,12 +26,6 @@ function LegalInfo(props) {
     setFilteredLegalInfo(filtered);
   }, [searchQuery, legalInfo]);
 
-  // Function to open document in a new tab
-  const openDocumentInNewTab = (document) => {
-    if (document) {
-      window.open(document, "_blank");
-    }
-  };
 
   return (
     <div
@@ -93,19 +87,22 @@ function LegalInfo(props) {
                 <td>{info.info_id}</td>
                 <td>{info.info_email}</td>
                 <td>
-                  {info.document ? (
-                    <button onClick={() => openDocumentInNewTab(info.document)}>
-                      Open Document
-                    </button>
-                  ) : (
-                    "No document available"
-                  )}
+                  <a
+                    href={info.document}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <u>(View Contract)</u>
+                  </a>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <div className="mt-4" style={{ position: "fixed", bottom: 50, left: 50 }}>
+        <div
+          className="mt-4"
+          style={{ position: "fixed", bottom: 50, left: 50 }}
+        >
           <Link to="/adminpage" className="btn btn-primary me-2">
             Back
           </Link>

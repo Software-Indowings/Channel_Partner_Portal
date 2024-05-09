@@ -212,7 +212,10 @@ const RegForm = () => {
             ))}
           </tbody>
         </table>
-        <div className="mt-4" style={{ flexBasis: "100%" }}>
+        <div
+          className="mt-4"
+          style={{ position: "fixed", bottom: 50, left: 50 }}
+        >
           <Link to="/layout" className="btn btn-primary me-2">
             Back
           </Link>
