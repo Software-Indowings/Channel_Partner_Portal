@@ -36,6 +36,7 @@ function Registration_from(props) {
     cancelled_cheque: null,
     no_of_directors: "0",
     directors: [],
+    uploading: false, 
   });
   const [error, setError] = useState("");
 
@@ -55,6 +56,7 @@ function Registration_from(props) {
     const file = e.target.files[0];
     console.log(file);
     const imgs = ref(imgDB, `Files/${v4()}.${file.name.split(".").pop()}`);
+    setValues({ ...values, uploading: true }); 
     uploadBytes(imgs, file).then((data) => {
       console.log(data, "imgs");
       getDownloadURL(data.ref).then((val) => {
@@ -70,6 +72,7 @@ function Registration_from(props) {
             [updatedField]: val,
           },
         }));
+        setValues({ ...values, uploading: false });
       });
     });
   };
@@ -370,6 +373,7 @@ function Registration_from(props) {
                 style={inputStyle}
                 required
               />
+              
             </div>
           </div>
           <div className="row">
@@ -438,7 +442,9 @@ function Registration_from(props) {
                 style={inputStyle}
                 required
               />
+              {values.uploading && <p>Uploading...</p>}
             </div>
+            
           </div>
         </div>
       );

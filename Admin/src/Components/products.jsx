@@ -67,7 +67,7 @@ function Products(props) {
                 <th style={{ padding: "10px" }}>Brochure</th>
                 <th style={{ padding: "10px" }}>Stock</th>
                 <th style={{ padding: "10px" }}>Retail Price</th>
-                <th style={{ padding: "10px" }}>Partner Price</th>
+                {/* <th style={{ padding: "10px" }}>Partner Price</th> */}
                 <th style={{ padding: "10px" }}>Category</th>
                 <th style={{ padding: "10px" }}>Action</th>
               </tr>
@@ -95,7 +95,7 @@ function Products(props) {
                     </td>
                     <td style={{ padding: "10px" }}>{product.stock}</td>
                     <td style={{ padding: "10px" }}>{product.retail_price}</td>
-                    <td style={{ padding: "10px" }}>{product.partner_price}</td>
+                    {/* <td style={{ padding: "10px" }}>{product.partner_price}</td> */}
                     <td style={{ padding: "10px" }}>{product.category}</td>
                     <td style={{ padding: "10px" }}>
                       <Link

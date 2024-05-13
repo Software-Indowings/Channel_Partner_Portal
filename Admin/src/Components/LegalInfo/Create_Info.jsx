@@ -10,6 +10,7 @@ function Create_Info() {
   const [values, setValues] = useState({
     email: "",
     document: null,
+    uploading: false, 
   });
 
   const navigate = useNavigate();
@@ -18,23 +19,22 @@ function Create_Info() {
     const file = e.target.files[0];
     console.log(file);
     const imgs = ref(imgDB, `Files/${v4()}.${file.name.split(".").pop()}`);
+    setValues({ ...values, uploading: true }); 
     uploadBytes(imgs, file).then((data) => {
       console.log(data, "imgs");
       getDownloadURL(data.ref).then((val) => {
         console.log(val);
-        setValues({ ...values, [fieldName]: val });
+        setValues({ ...values, [fieldName]: val, uploading: false }); 
       });
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
     const requestData = {
       info_email: values.email,
       document: values.document
     };
-  
     axios
       .post("https://server.indowings.com/create-info", requestData)
       .then((res) => {
@@ -43,7 +43,6 @@ function Create_Info() {
       })
       .catch((err) => console.log(err));
   };
-  
 
   const handleFileChange = (e) => {
     setValues({
@@ -66,9 +65,13 @@ function Create_Info() {
         padding: "20px",
       }}
     >
-      <div className="w-50 bg-white rounded p-5">
+      <div style={{
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          padding: "20px",
+          borderRadius: "10px",
+        }}>
         <form onSubmit={handleSubmit}>
-          <h2 className="mb-4">Add Legal Document</h2>
+          <h3 className="mb-4">Add Legal Document</h3>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email
@@ -95,7 +98,7 @@ function Create_Info() {
               className="form-control"
             />
           </div>
-          {/* Display blob URL as PDF or image */}
+          {values.uploading && <p>Uploading...</p>}
           {values.documentURL && (
             <div className="mb-3">
               {values.document.type === "application/pdf" ? (

@@ -1,14 +1,4 @@
 import React from "react";
-import {
-  BsCart3,
-  BsGrid1X2Fill,
-  BsFillArchiveFill,
-  BsFillGrid3X3GapFill,
-  BsPeopleFill,
-  BsListCheck,
-  BsMenuButtonWideFill,
-  BsFillGearFill,
-} from "react-icons/bs";
 import { TbTargetArrow } from "react-icons/tb";
 import { FaFileInvoiceDollar } from "react-icons/fa6";
 import { LiaLuggageCartSolid } from "react-icons/lia";
@@ -64,6 +54,7 @@ const Sidebar = ({ open, openSidebar, setContentComponent }) => {
         <li style={{ fontSize: "25px", textAlign: "center" }}>
           Partner Portal
         </li>
+        <br/>
         <li
           className="sidebar-list-item"
           onClick={() => {

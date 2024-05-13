@@ -54,11 +54,11 @@ function Create_Products() {
                         <input type="text" placeholder='Retail Price' className='form-control'
                                onChange={e => setValues({ ...values, retail_price: e.target.value })}/>
                     </div>
-                    <div style={{ marginBottom: '20px' }}>
+                    {/* <div style={{ marginBottom: '20px' }}>
                         <label htmlFor="">Partner Price</label>
                         <input type="text" placeholder='Partner Price' className='form-control'
                                onChange={e => setValues({ ...values, partner_price: e.target.value })}/>
-                    </div>
+                    </div> */}
                     <div style={{ marginBottom: '20px' }}>
                         <label htmlFor="">Choose Category  below:</label>
                         <select className='form-control' value={values.category} onChange={handleCategoryChange}>

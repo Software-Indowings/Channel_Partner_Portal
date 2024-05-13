@@ -36,8 +36,8 @@ const Home = () => {
     },
     {
       name: "FY C",
-      CyberOne: 2000,
-      AgriSeries: 9800,
+      CyberOne: 7800,
+      AgriSeries: 2000,
       amt: 2290,
     },
     {
@@ -79,9 +79,8 @@ const Home = () => {
       </div>
 
       <div className="main-cards">
-
         <div className="card">
-        <Link
+          <Link
             to="/store"
             className="card-inner"
             style={{ textDecoration: "none", color: "white" }}
@@ -92,7 +91,7 @@ const Home = () => {
         </div>
 
         <div className="card">
-        <Link
+          <Link
             to="/order"
             className="card-inner"
             style={{ textDecoration: "none", color: "white" }}
@@ -100,10 +99,9 @@ const Home = () => {
             <h3>Orders</h3>
             <BsFillGrid3X3GapFill className="card_icon" />
           </Link>
-          
         </div>
         <div className="card">
-        <Link
+          <Link
             to="/regform"
             className="card-inner"
             style={{ textDecoration: "none", color: "white" }}
@@ -111,9 +109,8 @@ const Home = () => {
             <h3> Company KYC</h3>
             <BsPeopleFill className="card_icon" />
           </Link>
-         
         </div>
-        
+
         <div className="card">
           <Link
             to="/announce"
@@ -123,9 +120,7 @@ const Home = () => {
             <h3>Announcements</h3>
             <BsFillBellFill className="card_icon" />
           </Link>
-          
         </div>
-
       </div>
 
       <div className="charts">
@@ -146,8 +141,8 @@ const Home = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="AgriSeries" fill="#8884d8" />
-            <Bar dataKey="CyberOne" fill="#82ca9d" />
+            <Bar dataKey="AgriSeries" fill="#82ca9d" />
+            <Bar dataKey="CyberOne" fill="#8884d8" />
           </BarChart>
         </ResponsiveContainer>
 
@@ -171,10 +166,10 @@ const Home = () => {
             <Line
               type="monotone"
               dataKey="AgriSeries"
-              stroke="#8884d8"
+              stroke="#82ca9d"
               activeDot={{ r: 8 }}
             />
-            <Line type="monotone" dataKey="CyberOne" stroke="#82ca9d" />
+            <Line type="monotone" dataKey="CyberOne" stroke="#8884d8" />
           </LineChart>
         </ResponsiveContainer>
       </div>

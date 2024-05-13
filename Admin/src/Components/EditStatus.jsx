@@ -14,14 +14,13 @@ function EditStatus(props) {
     order_status: "",
     invoice: null,
   });
-  const [uploading, setUploading] = useState(false); // Added loading state
+  const [uploading, setUploading] = useState(false);
 
   const handleUpload = (e, fieldName) => {
     const file = e.target.files[0];
     console.log(file);
     const imgs = ref(imgDB, `invoice/${v4()}.${file.name.split(".").pop()}`);
 
-    // Set uploading state to true
     setUploading(true);
 
     uploadBytes(imgs, file)
@@ -30,13 +29,11 @@ function EditStatus(props) {
         getDownloadURL(data.ref).then((val) => {
           console.log(val);
           setValues({ ...values, [fieldName]: val });
-          // Set uploading state to false after successful upload
           setUploading(false);
         });
       })
       .catch((error) => {
         console.error("Error uploading image:", error);
-        // Set uploading state to false in case of an error
         setUploading(false);
       });
   };
@@ -97,16 +94,15 @@ function EditStatus(props) {
         }}
       >
         <form onSubmit={handleUpdate}>
-          <h2>
-            Update Status{" "}
+          <h3>
+            Update Status
             <button
               onClick={() => handleDelete(order.order_id)}
               className="btn btn-danger ms-2"
             >
-              {" "}
               Delete Order
-            </button>{" "}
-          </h2>
+            </button>
+          </h3>
 
           <div style={{ marginBottom: "20px" }}>
             <p>Order ID: {order.order_id}</p>
@@ -143,7 +139,7 @@ function EditStatus(props) {
                 handleUpload(e, "invoice");
               }}
             />
-             {uploading && <p>Uploading...</p>}
+            {uploading && <p>Uploading...</p>}
           </div>
 
           <br />
@@ -178,7 +174,7 @@ function EditStatus(props) {
           >
             Update
           </button>
-         
+          
         </form>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
 import { useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import { selectUser } from "../../features/userSlice";
 
 function SelectedProductsModal({ selectedProducts, onClose }) {
   const user = useSelector(selectUser);
+  const [showModal, setShowModal] = useState(false);
   const modalStyle = {
     display: "block",
     position: "fixed",
@@ -101,6 +102,8 @@ function SelectedProductsModal({ selectedProducts, onClose }) {
       .then((response) => {
         console.log("Order placed successfully:", response.data);
         alert("Order placed successfully!");
+        setShowModal(false);
+        onClose(); 
       })
       .catch((error) => {
         console.error("Error placing order:", error);
