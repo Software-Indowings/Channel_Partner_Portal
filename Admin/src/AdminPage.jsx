@@ -117,7 +117,7 @@ function AdminPage() {
             </CardContent>
           </Card> */}
           <Link
-            to="https://contracting-dashboard-preproduction.signzy.app/ots/login"
+            to="https://contracting-dashboard.signzy.app/ots/login"
             target="_blank"
             rel="noopener noreferrer"
           >

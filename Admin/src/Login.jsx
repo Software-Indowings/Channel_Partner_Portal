@@ -15,8 +15,8 @@ function Login(props) {
   const handleLoginSuccess = (id) => {
     dispatch(
       adminLogin({
-        username: "root",
-        password: "root",
+        username: "partner@indowings.com",
+        password: "Indowings@123",
       })
     );
     // localStorage.setItem("isLoggedIn", true);
@@ -26,7 +26,7 @@ function Login(props) {
 
   const handleSubmit = (user, pass) => {
     // event.preventDefault();
-    if (user === "root" && pass === "root") {
+    if (user === "partner@indowings.com" && pass === "Indowings@123") {
       handleLoginSuccess(id);
     } else {
       alert("Invalid ID or password");
