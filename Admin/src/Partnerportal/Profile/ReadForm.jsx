@@ -54,20 +54,10 @@ function ReadForm(props) {
         }
       })
       .catch((err) => console.log(err));
-  }, [profile.id]); // Changed companyId to profile.id
-
-  //   const handleDelete = (profile_id) => {
-  //     axios
-  //       .delete(`https://server.indowings.com/delete_profile/${profile_id}`)
-  //       .then((res) => {
-  //         navigate("/admin_profile");
-  //       })
-  //       .catch((err) => console.log(err));
-  //   };
+  }, [profile.id]); 
 
   return (
     <div
-      // className="d-flex flex-column vh-100 justify-content-center align-items-center"
       style={{
         backgroundImage: `url(${background})`,
         backgroundSize: "cover",

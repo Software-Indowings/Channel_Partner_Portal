@@ -13,6 +13,8 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import Addpartner from "./Components/Addpartner";
+import PartnerContract from "./Components/PartnerContract";
+import Contract from "./Components/Contract"
 import Products from "./Components/products";
 import Create_Products from "./Components/create_products";
 import Read_products from "./Components/Read_products";
@@ -91,6 +93,15 @@ function App() {
             </AdminProtectedRoute>
           }
         />
+         <Route
+          path="/partnercontract"
+          element={
+            <AdminProtectedRoute>
+              <PartnerContract />
+            </AdminProtectedRoute>
+          }
+        />
+        
         <Route
           path="/products"
           element={
@@ -147,6 +158,15 @@ function App() {
             </AdminProtectedRoute>
           }
         />
+        <Route
+          path="/contract/:id"
+          element={
+            <AdminProtectedRoute>
+              <Contract />
+            </AdminProtectedRoute>
+          }
+        />
+       
         <Route
           path="/edit/:id"
           element={

@@ -1,25 +1,19 @@
 import express from "express";
 import mysql from "mysql";
 import cors from "cors";
-// import bcrypt from 'bcrypt';
 import bodyParser from "body-parser";
 import fs from "fs";
-import multer from "multer";
-import jwt from 'jsonwebtoken';
-// import sendMail from "./SendMail";
-// import Randomstring from 'randomstring';
 
+// Use this after the variable declaration
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: '*', // Allow all origins
+  methods: '*', // Allow all HTTP methods
+  allowedHeaders: '*' // Allow all headers
+}));
 app.use(bodyParser.json());
 app.use(express.json());
-
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database: 'partnerportal',
-// });
 
 const db = mysql.createConnection({
   host: "ls-b120627a54c35ec7aa532f95056b0e3ba1d5b806.cx8km2ky23qf.ap-south-1.rds.amazonaws.com",
@@ -36,35 +30,13 @@ db.connect((err) => {
   console.log("Connected to MySQL database as id " + db.threadId);
 });
 
-// //RND
-// // Handle file upload
-// app.post('/upload', upload.single('file'), (req, res) => {
-//   // Handle file upload here
-//   const file = req.file;
-//   console.log(file);
-//   // Send response
-//   res.send('File uploaded successfully');
-// });
-
-// // Get user data
-// app.get('/users', (req, res) => {
-//   const query = 'SELECT * FROM users';
-//   connection.query(query, (err, results) => {
-//     if (err) {
-//       console.error('Error fetching user data:', err);
-//       res.status(500).send('Error fetching user data');
-//       return;
-//     }
-//     res.json(results);
-//   });
-// });
-
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*'); // Allow requests from all origins
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Allow these HTTP methods
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allow these headers
   next();
 });
+
 
 // Login Partner
 app.post("/login", async (req, res) => {
@@ -75,7 +47,6 @@ app.post("/login", async (req, res) => {
   db.query(sql, [username], async (err, result) => {
     const user = result[0];
     console.log(user.username);
-    // console.log(user.password);
     console.log(user.category);
     console.log(user.commission);
     if (err) {
@@ -85,11 +56,7 @@ app.post("/login", async (req, res) => {
     if (result.length === 0) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
-    // const isValidPassword = password === user.password;
-    // console.log(isValidPassword);
-    // if (!isValidPassword) {
-    //   return res.status(401).json({ message: "Invalid username or password" });
-    // }
+
     return res.status(200).json({
       message: "Login successful",
       username: user.username,
@@ -102,8 +69,8 @@ app.post("/login", async (req, res) => {
   });
 });
 
-// Partner Handling
 
+// Partner Handling
 app.get("/", (req, res) => {
   const sql = "SELECT * FROM partner";
   db.query(sql, (err, result) => {
@@ -111,6 +78,8 @@ app.get("/", (req, res) => {
     return res.json(result);
   });
 });
+
+
 
 app.post("/partner", (req, res) => {
   const sql =
@@ -158,6 +127,15 @@ app.get("/read/:id", (req, res) => {
   });
 });
 
+app.get("/contract/:id", (req, res) => {
+  const sql = "SELECT * FROM partner WHERE id =?";
+  const id = req.params.id;
+  db.query(sql, [id], (err, result) => {
+    if (err) return res.json({ Message: "Error in server" });
+    return res.json(result);
+  });
+});
+
 app.put("/update/:id", (req, res) => {
   const sql =
     "UPDATE partner SET `username`=?, `password`=?, `category`=?, `commission`=?, `steps`=?, `review`=? WHERE id =?";
@@ -197,6 +175,66 @@ app.put("/updateverify/:id", (req, res) => {
   );
 });
 
+app.put("/updatecontract/:id", (req, res) => {
+  const sql =
+    "UPDATE partner SET `contract`=? WHERE id =?";
+  const id = req.params.id;
+  db.query(
+    sql,
+    [
+      req.body.contract,
+      id,
+    ],
+    (err, result) => {
+      if (err) return res.json({ Message: "Error in server" });
+      return res.json(result);
+    }
+  );
+});
+
+app.get('/api/partners_profile/:profile_id', (req, res) => {
+  const profileId = req.params.profile_id;
+  const query = 'SELECT * FROM partners_profile WHERE profile_id = ?';
+
+  db.query(query, [profileId], (err, results) => {
+    if (err) {
+      console.error('Error fetching profile data: ', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    
+    if (results.length === 0) {
+      res.status(404).send('Profile not found');
+      return;
+    }
+
+    res.json(results[0]);
+  });
+});
+
+app.get('/api/company_kyc/:company_id', (req, res) => {
+  const companyId = req.params.company_id;
+  const query = `SELECT * FROM company_kyc WHERE id = ?`;
+
+  db.query(query, [companyId], (err, results) => {
+    if (err) {
+      console.error('Error fetching company KYC data: ', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    
+    if (results.length === 0) {
+      res.status(404).send('Company KYC data not found');
+      return;
+    }
+
+    res.json(results[0]);
+  });
+});
+
+
+
+
 app.delete("/delete/:id", (req, res) => {
   const sql = "DELETE FROM partner WHERE id =?";
   const id = req.params.id;
@@ -226,17 +264,6 @@ app.get("/products_filter", (req, res) => {
   });
 });
 
-// app.get('/products_filter', (req, res) => {
-//     const partnerCategory = partner.category;
-//     console.log(user.category);
-//     const sql = 'SELECT * FROM products WHERE category = partnerCategory';
-//     db.query(sql, [partnerCategory], (err, result) => {
-//         if (err) {
-//             return res.status(500).json({ Message: "Error in server" });
-//         }
-//         return res.json(result);
-//     });
-// });
 
 app.post("/products", (req, res) => {
   const sql =
@@ -293,7 +320,9 @@ app.delete("/delete_products/:product_id", (req, res) => {
   });
 });
 
+
 //Announcements Handling
+
 
 app.get("/announce", (req, res) => {
   const sql = "SELECT * FROM announcements";
@@ -341,7 +370,9 @@ app.delete("/delete_announcement/:announce_id", (req, res) => {
   });
 });
 
+
 //Partner Profile Handling
+
 
 app.get("/allpartnersprofile", (req, res) => {
   const sql = "SELECT * FROM partners_profile";
@@ -372,6 +403,7 @@ app.get("/read_profile/:profile_id", (req, res) => {
     return res.json(result);
   });
 });
+
 
 app.delete("/delete_profile/:profile_id", (req, res) => {
   const sql = "DELETE FROM partners_profile WHERE profile_id =?";
@@ -539,26 +571,6 @@ app.post("/create-info", (req, res) => {
 });
 
 
-// app.post("/uploadPdf", uploadPdf.single("file"), (req, res) => {
-//   const info_email = req.body.email;
-//   const documentPath = req.file.path;
-
-//   try {
-//     const sql = "INSERT INTO legal_info (info_email, document) VALUES (?, ?)";
-//     db.query(sql, [info_email, documentPath], (err, result) => {
-//       if (err) {
-//         console.error("Error uploading PDF to MySQL:", err);
-//         res.status(500).send("Error uploading PDF");
-//         return;
-//       }
-//       console.log("PDF uploaded to MySQL");
-//       res.status(200).send("PDF uploaded successfully");
-//     });
-//   } catch (e) {
-//     console.log("err--->", e);
-//   }
-// });
-
 // Get All Legal Info
 app.get("/legal-info", (req, res) => {
   const SELECT_ALL_INFO_QUERY = "SELECT * FROM legal_info";
@@ -607,15 +619,7 @@ app.get("/api/targets/:email/:year/:month", (req, res) => {
   });
 });
 
-//Orders Handling
 
-// app.get('/allorders', (req, res) => {
-//     const sql = 'SELECT * FROM orders';
-//     db.query(sql,(err,result)=>{
-//         if(err) return res.json({Message: "Error in server"});
-//         return res.json(result);
-//     })
-// });
 
 app.get("/allorders", (req, res) => {
   db.query("SELECT * FROM orders", (error, results, fields) => {
@@ -691,14 +695,7 @@ app.put("/edistatus/:order_id", (req, res) => {
   });
 });
 
-// app.put("/edistatus/:order_id", (req, res) => {
-//   const sql = "UPDATE orders SET `order_status`=? WHERE order_id =?";
-//   const id = req.params.order_id;
-//   db.query(sql, [req.body.order_status, id], (err, result) => {
-//     if (err) return res.json({ Message: "Error in server" });
-//     return res.json(result);
-//   });
-// });
+
 
 app.delete("/delete_order/:order_id", (req, res) => {
   const sql = "DELETE FROM orders WHERE order_id =?";
@@ -729,6 +726,28 @@ app.post("/getSingleCompany", (req, res) => {
   });
 });
 
+app.post('/generate-contract', async (req, res) => {
+  try {
+      const { templateId, urlType, jsonData } = req.body;
+
+      const response = await axios.post('https://api.signzy.app/api/v3/contract/generate', {
+          templateId,
+          urlType,
+          jsonData
+      }, {
+          headers: {
+              'Authorization': 'p6So4fPX4Pc1075PB09D6Aq88kwU4pTi',
+              'Content-Type': 'application/json'
+          }
+      });
+
+      res.json(response.data);
+  } catch (error) {
+      console.error('Error:', error.response.data);
+      res.status(error.response.status || 500).json({ error: error.response.data });
+  }
+});
+
 app.post("/getDirectors", (req, res) => {
   const user = req.body.companyId;
   const sql = "SELECT * FROM directors WHERE company_id =?";
@@ -750,6 +769,15 @@ app.post("/getDirectors", (req, res) => {
 });
 
 app.get("/read_form/:id", (req, res) => {
+  const sql = "SELECT * FROM company_kyc WHERE id =?";
+  const id = req.params.id;
+  db.query(sql, [id], (err, result) => {
+    if (err) return res.json([]);
+    return res.json(result);
+  });
+});
+
+app.get("/read_contract/:id", (req, res) => {
   const sql = "SELECT * FROM company_kyc WHERE id =?";
   const id = req.params.id;
   db.query(sql, [id], (err, result) => {
@@ -829,7 +857,6 @@ app.post("/submitform", async (req, res) => {
           const company_id = result.insertId;
           
           const directors = req.body.directors;
-// ============================================================
           const sqlSelectPartnerId = "SELECT id FROM partner WHERE username = ?";
 
           await db.query(sqlSelectPartnerId, [req.body.reg_email], async (err, result) => {
@@ -848,7 +875,7 @@ app.post("/submitform", async (req, res) => {
               // return res.json({ success: true, message: "Company_id updated in partner table." });
             });
           });
-// ================================================================
+
 
           
           Object.keys(directors).map(async (dir, ind) => {
@@ -969,20 +996,74 @@ app.post("/submitform", async (req, res) => {
   }
 });
 
+app.get('/reads/:id', (req, res) => {
+  const id = req.params.id;
+  const query = `
+      SELECT partner.*, partners_profile.*, company_kyc.pan_number AS pan_number, directors.name AS name
+      FROM partner
+      LEFT JOIN partners_profile ON partner.profile_id = partners_profile.profile_id
+      LEFT JOIN company_kyc ON partner.company_id = company_kyc.id
+      LEFT JOIN directors ON partner.company_id = directors.company_id
+      WHERE partner.id = ?
+      LIMIT 1;
+  `;
+  db.query(query, [id], (err, results) => {
+      if (err) {
+          console.error(err);
+          res.status(500).send(err);
+      } else {
+          res.json(results);
+      }
+  });
+});
 
-//   // Delete Legal Info by ID
-//   app.delete('/legal-info/:id', (req, res) => {
-//     const { id } = req.params;
-//     const DELETE_INFO_QUERY = 'DELETE FROM legal_info WHERE info_id = ?';
-//     db.query(DELETE_INFO_QUERY, [id], (err, result) => {
-//       if (err) {
-//         console.error(err);
-//         res.status(500).send('Error deleting legal info');
-//       } else {
-//         res.status(200).send('Legal info deleted successfully');
-//       }
-//     });
-//   });
+app.post('/api/generate-contract', async (req, res) => {
+  const { templateId, urlType, jsonData } = req.body;
+
+  try {
+      const authorizationHeader = 'p6So4fPX4Pc1075PB09D6Aq88kwU4pTi';
+
+      const response = await fetch('https://api.signzy.app/api/v3/contract/generate', {
+          method: 'POST',
+          headers: {
+              'Authorization': authorizationHeader,
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ templateId, urlType, jsonData })
+      });
+
+      const responseData = await response.json();
+      res.json(responseData);
+  } catch (error) {
+      console.error('Error generating contract:', error);
+      res.status(500).json({ error: 'Failed to generate contract' });
+  }
+});
+
+
+app.post('/api/initiate-contract', async (req, res) => {
+  const {pdf,contractName,contractExecuterName,successRedirectUrl,failureRedirectUrl,callbackUrl,
+    callbackUrlAuthorizationHeader,signerdetail,signerCallbackUrl, customerMailList, workflow} = req.body;
+  try {
+      const authorizationHeader = 'p6So4fPX4Pc1075PB09D6Aq88kwU4pTi';
+      const response = await fetch('https://api.signzy.app/api/v3/contract/initiate', {
+          method: 'POST',
+          headers: {
+              'Authorization': authorizationHeader,
+              'Content-Type': 'application/json'
+          },
+          
+          body: JSON.stringify({pdf,contractName,contractExecuterName,successRedirectUrl,failureRedirectUrl,callbackUrl,
+            callbackUrlAuthorizationHeader,signerdetail,signerCallbackUrl, customerMailList, workflow})
+      });
+      const responseData = await response.json();
+      res.json(responseData);
+  } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Failed to initiate contract' });
+  }
+});
+
 
 app.listen(3307, () => {
   console.log("Listening: server is live");

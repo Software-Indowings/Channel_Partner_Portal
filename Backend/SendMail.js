@@ -13,7 +13,7 @@ const sendMail = async(req, res)=>{
   });
 
 let  info = await transport.sendMail({
-  from: '"Ayushi" <software@indowings.com>', // sender
+  from: '"Indo Wings " <software@indowings.com>', // sender
   to: "ayushichaudhary1709@gmail.com",
   subject:"Partner Verification",
   text:"Hello Partner", // plain text body

@@ -96,27 +96,17 @@ function AdminPage() {
               Partner Credentials
             </CardContent>
           </Card>
-          {/* <Card
-            style={cardStyle}
-            onMouseEnter={handleHover}
-            onMouseLeave={handleHoverOut}
-            onClick={() => navigate("/admin_profile")}
-          >
-            <CardContent style={{ ...textStyle, color: "black" }}>
-              Company Profile
-            </CardContent>
-          </Card>
           <Card
             style={cardStyle}
             onMouseEnter={handleHover}
             onMouseLeave={handleHoverOut}
-            onClick={() => navigate("/displayform")}
+            onClick={() => navigate("/partnercontract")}
           >
             <CardContent style={{ ...textStyle, color: "black" }}>
-              Company KYC Form
+              Contracts
             </CardContent>
-          </Card> */}
-          <Link
+          </Card>
+          {/* <Link
             to="https://contracting-dashboard.signzy.app/ots/login"
             target="_blank"
             rel="noopener noreferrer"
@@ -130,7 +120,7 @@ function AdminPage() {
                 Contracts
               </CardContent>
             </Card>
-          </Link>
+          </Link> */}
           <Card
             style={cardStyle}
             onMouseEnter={handleHover}
