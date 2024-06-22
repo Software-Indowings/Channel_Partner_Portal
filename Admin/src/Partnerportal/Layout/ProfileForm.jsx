@@ -16,7 +16,7 @@ const ProfileForm = () => {
     useEffect(() => {
       const fetch = async () => {
         await axios
-          .post(`https://server.indowings.com/loginUser`, {
+          .post(`http://localhost:5173/loginUser`, {
             user: user.username,
           })
           .then((res) => {

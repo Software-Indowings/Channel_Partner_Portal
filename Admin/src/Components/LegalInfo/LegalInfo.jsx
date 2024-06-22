@@ -10,7 +10,7 @@ function LegalInfo(props) {
 
   useEffect(() => {
     axios  
-      .get(`https://server.indowings.com/legal-info`)
+      .get(`http://localhost:5173/legal-info`)
       .then((res) => {
         setLegalInfo(res.data);
         setFilteredLegalInfo(res.data);

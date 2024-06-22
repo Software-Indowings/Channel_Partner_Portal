@@ -15,12 +15,20 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(express.json());
 
+// const db = mysql.createConnection({
+//   host: "ls-b120627a54c35ec7aa532f95056b0e3ba1d5b806.cx8km2ky23qf.ap-south-1.rds.amazonaws.com",
+//   user: "dbmasteruser",
+//   password: "IndoWings",
+//   database: "partnerportal",
+// });
+
 const db = mysql.createConnection({
-  host: "ls-b120627a54c35ec7aa532f95056b0e3ba1d5b806.cx8km2ky23qf.ap-south-1.rds.amazonaws.com",
+  host: "ls-e2d2e2d3495e0772140c48aadcc488664dc04d58.c5muoc260y9j.ap-south-1.rds.amazonaws.com",
   user: "dbmasteruser",
-  password: "IndoWings",
-  database: "partnerportal",
+  password: "#TdxAHpji?00u1Tp~8EM7C$UCNH1(apN",
+  database: "PartnerPortal",
 });
+
 
 db.connect((err) => {
   if (err) {

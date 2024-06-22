@@ -11,7 +11,7 @@ function DisplayForm() {
 
   useEffect(() => {
     axios
-      .get("https://server.indowings.com/fetchCompany/")
+      .get("http://localhost:5173/fetchCompany/")
       .then((res) => {
         if (res.data.length > 0) {
           setForm(res.data);

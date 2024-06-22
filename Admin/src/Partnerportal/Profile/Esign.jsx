@@ -52,7 +52,7 @@ function Esign() {
   useEffect(() => {
     const fetchDirectors = async (companyId) => {
       await axios
-        .post(`https://server.indowings.com/getDirectors`, {
+        .post(`http://localhost:5173/getDirectors`, {
           companyId: companyId,
         })
         .then((res) => {
@@ -62,7 +62,7 @@ function Esign() {
     };
     const fetch = async () => {
       await axios
-        .post(`https://server.indowings.com/getSingleCompany`, {
+        .post(`http://localhost:5173/getSingleCompany`, {
           user: user.username,
         })
         .then((res) => {
@@ -86,7 +86,7 @@ function Esign() {
       formData.append("eSignature", eSignature);
 
       const response = await axios.post(
-        "https://server.indowings.com/uploadPdf",
+        "http://localhost:5173/uploadPdf",
         formData,
         {
           headers: {
@@ -95,7 +95,7 @@ function Esign() {
         }
       );
 
-      await axios.post("https://server.indowings.com/updateStep", {
+      await axios.post("http://localhost:5173/updateStep", {
         count: 5,
         user: user.username,
       });

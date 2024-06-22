@@ -8,7 +8,7 @@ function Announcements(props) {
     const [isHovering, setIsHovering] = useState(false);
   
     useEffect(() => {
-      axios.get('https://server.indowings.com/announce/')
+      axios.get('http://localhost:5173/announce/')
         .then(res => {
           if (res.data.length > 0) {
             setAnnouncements(res.data);

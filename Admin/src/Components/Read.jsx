@@ -11,7 +11,7 @@ function Read(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`https://server.indowings.com/read/${id}`)
+        axios.get(`http://localhost:5173/read/${id}`)
             .then(res => {
                 setPartner(res.data[0]);
             })
@@ -19,7 +19,7 @@ function Read(props) {
     }, [])
 
     const handleDelete = (id) => {
-        axios.delete(`https://server.indowings.com/delete/${id}`)
+        axios.delete(`http://localhost:5173/delete/${id}`)
             .then(res => {
                 navigate('/addpartner');
             })

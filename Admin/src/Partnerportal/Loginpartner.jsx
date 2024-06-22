@@ -46,7 +46,7 @@ function LoginPartner() {
     // e.preventDefault();
     try {
       const res = await axios.post(
-        "https://server.indowings.com/login/",
+        "http://localhost:5173/login/",
         credentials
       );
       if (res.status === 200) {

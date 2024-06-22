@@ -98,7 +98,7 @@ const RegEdit = () => {
     useEffect(() => {
       const fetch = async () => {
         await axios
-          .post(`https://server.indowings.com/loginUser`, {
+          .post(`http://localhost:5173/loginUser`, {
             user: user.username,
           })
           .then((res) => {
@@ -113,7 +113,7 @@ const RegEdit = () => {
     useEffect(() => {
       const fetchDirectors = async (companyId) => {
         await axios
-          .post(`https://server.indowings.com/getDirectors`, {
+          .post(`http://localhost:5173/getDirectors`, {
             companyId: companyId,
           })
           .then((res) => {
@@ -123,7 +123,7 @@ const RegEdit = () => {
       };
       const fetch = async () => {
         await axios
-          .post(`https://server.indowings.com/getSingleCompany`, {
+          .post(`http://localhost:5173/getSingleCompany`, {
             user: user.username,
           })
           .then((res) => {
@@ -157,7 +157,7 @@ const RegEdit = () => {
         console.log("Sending form data to server...");
   
         const [submitResponse] = await Promise.all([
-          axios.post("https://server.indowings.com/submitform/", formattedValues),
+          axios.post("http://localhost:5173/submitform/", formattedValues),
         ]);
   
         console.log("Submit response:", submitResponse);

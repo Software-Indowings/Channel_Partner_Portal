@@ -17,7 +17,7 @@ function Create_Products() {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('https://server.indowings.com/products/', values)
+        axios.post('http://localhost:5173/products/', values)
             .then(res => {
                 console.log(res);
                 navigate('/products')

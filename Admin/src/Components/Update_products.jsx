@@ -18,7 +18,7 @@ function Update_products(props) {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/read_products/${product_id}`)
+      .get(`http://localhost:5173/read_products/${product_id}`)
       .then((res) => {
         if (res.data && res.data.length > 0) {
           const {
@@ -45,7 +45,7 @@ function Update_products(props) {
   const handleUpdate = (event) => {
     event.preventDefault();
     axios
-      .put(`https://server.indowings.com/update_products/${product_id}`, values)
+      .put(`http://localhost:5173/update_products/${product_id}`, values)
       .then((res) => {
         console.log(res);
         navigate("/products");

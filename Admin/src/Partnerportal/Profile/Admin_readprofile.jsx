@@ -10,7 +10,7 @@ function ReadProfile(props) {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/read_profile/${profile_id}`)
+      .get(`http://localhost:5173/read_profile/${profile_id}`)
       .then((res) => {
         console.log(res);
         setProfile(res.data[0]);
@@ -20,7 +20,7 @@ function ReadProfile(props) {
 
   const handleDelete = (profile_id) => {
     axios
-      .delete(`https://server.indowings.com/delete_profile/${profile_id}`)
+      .delete(`http://localhost:5173/delete_profile/${profile_id}`)
       .then((res) => {
         navigate("/admin_profile");
       })

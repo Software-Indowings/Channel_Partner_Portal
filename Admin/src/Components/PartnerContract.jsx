@@ -11,7 +11,7 @@ function PartnerContract() {
 
   useEffect(() => {
     axios
-      .get("https://server.indowings.com/")
+      .get("http://localhost:5173/")
       .then((res) => {
         if (res.data.length > 0) {
           setPartners(res.data);
@@ -34,7 +34,7 @@ function PartnerContract() {
     setPartners(updatedPartners);
 
     axios
-      .put(`https://server.indowings.com/updateverify/${partnerId}`, {
+      .put(`http://localhost:5173/updateverify/${partnerId}`, {
         is_verified: updatedPartners.find((partner) => partner.id === partnerId)
           .is_verified,
       })

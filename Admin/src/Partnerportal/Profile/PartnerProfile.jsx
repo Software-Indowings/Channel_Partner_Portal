@@ -31,7 +31,7 @@ function PartnerProfile() {
   useEffect(() => {
     const fetch = async () => {
       await axios
-        .post(`https://server.indowings.com/loginUser`, {
+        .post(`http://localhost:5173/loginUser`, {
           user: user.username,
         })
         .then((res) => {
@@ -54,7 +54,7 @@ function PartnerProfile() {
   const onSubmit = async () => {
     await Promise.all([
       axios
-        .post("https://server.indowings.com/updateStep", {
+        .post("http://localhost:5173/updateStep", {
           count: 2,
           user: user.username,
         })

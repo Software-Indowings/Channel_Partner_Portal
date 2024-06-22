@@ -15,7 +15,7 @@ const RegForm = () => {
   useEffect(() => {
     const fetch = async () => {
       await axios
-        .post(`https://server.indowings.com/fetchRegDetails`, {
+        .post(`http://localhost:5173/fetchRegDetails`, {
           user: user.username,
         })
         .then((res) => {
@@ -30,7 +30,7 @@ const RegForm = () => {
   useEffect(() => {
     const fetch = async () => {
       await axios
-        .get(`https://server.indowings.com/fetchDirectors/${profile.id}`)
+        .get(`http://localhost:5173/fetchDirectors/${profile.id}`)
         .then((res) => {
           if (res.data.length > 0) {
             console.log("Directors Data:", res.data);

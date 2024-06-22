@@ -10,7 +10,7 @@ function ReadProducts(props) {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/read_products/${product_id}`)
+      .get(`http://localhost:5173/read_products/${product_id}`)
       .then((res) => {
         console.log(res);
         setProduct(res.data[0]);
@@ -20,7 +20,7 @@ function ReadProducts(props) {
 
   const handleDelete = (product_id) => {
     axios
-      .delete(`https://server.indowings.com/delete_products/${product_id}`)
+      .delete(`http://localhost:5173/delete_products/${product_id}`)
       .then((res) => {
         navigate("/products");
       })

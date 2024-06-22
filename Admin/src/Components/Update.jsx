@@ -20,7 +20,7 @@ function Update(props) {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/read/${id}`)
+      .get(`http://localhost:5173/read/${id}`)
       .then((res) => {
         if (res.data && res.data.length > 0) {
           const { username, password, category, commission, steps, review } =
@@ -34,7 +34,7 @@ function Update(props) {
   const handleUpdate = (event) => {
     event.preventDefault();
     axios
-      .put(`https://server.indowings.com/update/${id}`, values)
+      .put(`http://localhost:5173/update/${id}`, values)
       .then((res) => {
         console.log(res);
         navigate("/addpartner");

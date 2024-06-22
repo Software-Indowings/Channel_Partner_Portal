@@ -9,7 +9,7 @@ function Orders(props) {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    fetch("https://server.indowings.com/allorders")
+    fetch("http://localhost:5173/allorders")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -42,7 +42,7 @@ function Orders(props) {
     console.log("Order ID:", orderId);
     console.log("New Status:", selectedStatus);
 
-    fetch(`https://server.indowings.com/updateOrderStatus/${orderId}`, {
+    fetch(`http://localhost:5173/updateOrderStatus/${orderId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

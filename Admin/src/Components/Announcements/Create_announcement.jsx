@@ -12,7 +12,7 @@ function Create_announcement() {
     const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('https://server.indowings.com/create_announcement/', values)
+        axios.post('http://localhost:5173/create_announcement/', values)
             .then(res => {
                 console.log(res);
                 navigate('/announcements')

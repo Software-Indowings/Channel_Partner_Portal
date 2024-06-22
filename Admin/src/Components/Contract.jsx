@@ -15,7 +15,7 @@ function Contract(props) {
 
 
     useEffect(() => {
-        axios.get(`http://localhost:3307/reads/${id}`)
+        axios.get(`http://localhost:5173/reads/${id}`)
             .then(res => {
                 setPartner(res.data[0]);
             })
@@ -60,7 +60,7 @@ function Contract(props) {
         };
         console.log(jsonData);
         try {
-            const response = await axios.post('http://localhost:3307/api/generate-contract', {
+            const response = await axios.post('http://localhost:5173/api/generate-contract', {
                 templateId: "6673f60a8192c533c6e91d5a",
                 urlType: "url",
                 jsonData: jsonData // Send constructed jsonData
@@ -85,7 +85,7 @@ function Contract(props) {
       
 
         try {
-            const response = await axios.post('http://localhost:3307/api/initiate-contract', 
+            const response = await axios.post('http://localhost:5173/api/initiate-contract', 
                 {
                     pdf: contractPdf,
                     contractName: "Indo Wings Channel Partner Contract",

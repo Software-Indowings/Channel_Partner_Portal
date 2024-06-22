@@ -14,7 +14,7 @@ function ReadForm(props) {
 
   useEffect(() => {
     axios
-      .get("https://server.indowings.com/allpartnersprofile/")
+      .get("http://localhost:5173/allpartnersprofile/")
       .then((res) => {
         if (res.data.length > 0) {
           setProfil(res.data);
@@ -36,7 +36,7 @@ function ReadForm(props) {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/read_form/${id}`)
+      .get(`http://localhost:5173/read_form/${id}`)
       .then((res) => {
         console.log("Profile Data:", res.data);
         setProfile(res.data[0]);
@@ -46,7 +46,7 @@ function ReadForm(props) {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/fetchDirectors/${profile.id}`) // Changed companyId to profile.id
+      .get(`http://localhost:5173/fetchDirectors/${profile.id}`) // Changed companyId to profile.id
       .then((res) => {
         if (res.data.length > 0) {
           console.log("Directors Data:", res.data);
@@ -79,7 +79,7 @@ function ReadForm(props) {
           maxWidth: "1200px",
         }}
       >
-        <h3 className="mb-4">Registration Details:</h3>
+        <h3 className="mb-4">Partner KYC Details:</h3>
         <table className="table table-bordered">
           <tbody>
             <tr>

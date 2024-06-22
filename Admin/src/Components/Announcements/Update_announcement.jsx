@@ -14,7 +14,7 @@ function Update_announcement(props) {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/read_announcement/${announce_id}`)
+      .get(`http://localhost:5173/read_announcement/${announce_id}`)
       .then((res) => {
         if (res.data && res.data.length > 0) {
           const { heading, description } = res.data[0];
@@ -27,7 +27,7 @@ function Update_announcement(props) {
   const handleUpdate = (event) => {
     event.preventDefault();
     axios
-      .put(`https://server.indowings.com/update_announcement/${announce_id}`, values)
+      .put(`http://localhost:5173/update_announcement/${announce_id}`, values)
       .then((res) => {
         console.log(res);
         navigate("/announcements");

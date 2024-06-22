@@ -7,7 +7,7 @@ function Announce() {
 
   useEffect(() => {
     axios
-      .get("https://server.indowings.com/announce/")
+      .get("http://localhost:5173/announce/")
       .then((res) => {
         if (res.data.length > 0) {
           setAnnouncements(res.data);

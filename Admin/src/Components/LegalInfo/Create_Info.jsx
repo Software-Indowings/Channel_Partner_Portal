@@ -36,7 +36,7 @@ function Create_Info() {
       document: values.document
     };
     axios
-      .post("https://server.indowings.com/create-info", requestData)
+      .post("http://localhost:5173/create-info", requestData)
       .then((res) => {
         console.log(res);
         navigate("/legalinfo");

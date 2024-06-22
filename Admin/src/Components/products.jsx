@@ -8,7 +8,7 @@ function Products(props) {
 
   useEffect(() => {
     axios
-      .get("https://server.indowings.com/products_create/")
+      .get("http://localhost:5173/products_create/")
       .then((res) => {
         if (res.data.length > 0) {
           setData(res.data);
@@ -18,7 +18,7 @@ function Products(props) {
   }, []);
 
   // const handleDelete = (product_id) => {
-  //   axios.delete('https://server.indowings.com/delete_products/' + product_id)
+  //   axios.delete('http://localhost:5173/delete_products/' + product_id)
   //     .then(res => {
   //       location.reload();
   //     })

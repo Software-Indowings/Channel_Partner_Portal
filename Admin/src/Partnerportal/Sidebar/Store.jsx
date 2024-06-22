@@ -18,7 +18,7 @@ function Store() {
     setUserCommission(user.commission);
 
     axios
-      .get("https://server.indowings.com/products_create/")
+      .get("http://localhost:5173/products_create/")
       .then((res) => {
         if (res.data.length > 0) {
           const productsWithCount = res.data.map((product) => ({

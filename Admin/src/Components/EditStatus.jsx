@@ -41,7 +41,7 @@ function EditStatus(props) {
   const handleUpdate = (event) => {
     event.preventDefault();
     axios
-      .put(`https://server.indowings.com/edistatus/${order_id}`, values)
+      .put(`http://localhost:5173/edistatus/${order_id}`, values)
       .then((res) => {
         console.log(res);
         navigate("/orders");
@@ -51,7 +51,7 @@ function EditStatus(props) {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/read_order/${order_id}`)
+      .get(`http://localhost:5173/read_order/${order_id}`)
       .then((res) => {
         setOrder(res.data[0]);
       })
@@ -60,7 +60,7 @@ function EditStatus(props) {
 
   const handleDelete = (order_id) => {
     axios
-      .delete(`https://server.indowings.com/delete_order/${order_id}`)
+      .delete(`http://localhost:5173/delete_order/${order_id}`)
       .then((res) => {
         navigate("/orders");
       })

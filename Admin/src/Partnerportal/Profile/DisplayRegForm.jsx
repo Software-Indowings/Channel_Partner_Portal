@@ -31,7 +31,7 @@
     useEffect(() => {
       const fetch = async () => {
         await axios
-          .post(`https://server.indowings.com/fetchRegDetails`, {
+          .post(`http://localhost:5173/fetchRegDetails`, {
             user: user.username,
           })
           .then((res) => {
@@ -46,7 +46,7 @@
     useEffect(() => {
       const fetch = async () => {
         await axios
-          .get(`https://server.indowings.com/fetchDirectors/${profile.id}`)
+          .get(`http://localhost:5173/fetchDirectors/${profile.id}`)
           .then((res) => {
             if (res.data.length > 0) {
               console.log("Directors Data:", res.data);
@@ -70,7 +70,7 @@
           message: 'A new partner has registered on the partner portal',
         }, 'S7KBqsJ-qWd3njYHf');
     
-        await axios.post("https://server.indowings.com/updateStep", {
+        await axios.post("http://localhost:5173/updateStep", {
           count: 4,
           user: user.username,
         });

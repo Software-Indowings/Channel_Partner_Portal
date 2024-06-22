@@ -71,7 +71,7 @@ function AdminPage() {
       <div className="Main">
         <div className="topbar">
           <h1 style={{ color: "white", fontSize: "30px" }}>
-            Partner Portal Admin {userName}
+          Partner Information Hub{userName}
           </h1>
           <Button onClick={handleLogout} variant="contained" color="primary">
             Logout
@@ -93,34 +93,11 @@ function AdminPage() {
             onClick={() => navigate("/addpartner")}
           >
             <CardContent style={{ ...textStyle, color: "black" }}>
-              Partner Credentials
+              Manage Partners
             </CardContent>
           </Card>
-          <Card
-            style={cardStyle}
-            onMouseEnter={handleHover}
-            onMouseLeave={handleHoverOut}
-            onClick={() => navigate("/partnercontract")}
-          >
-            <CardContent style={{ ...textStyle, color: "black" }}>
-              Contracts
-            </CardContent>
-          </Card>
-          {/* <Link
-            to="https://contracting-dashboard.signzy.app/ots/login"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Card
-              style={cardStyle}
-              onMouseEnter={handleHover}
-              onMouseLeave={handleHoverOut}
-            >
-              <CardContent style={{ ...textStyle, color: "black" }}>
-                Contracts
-              </CardContent>
-            </Card>
-          </Link> */}
+    
+     
           <Card
             style={cardStyle}
             onMouseEnter={handleHover}
@@ -128,7 +105,7 @@ function AdminPage() {
             onClick={() => navigate("/legalinfo")}
           >
             <CardContent style={{ ...textStyle, color: "black" }}>
-              Legal Documents
+            Partnership Contracts
             </CardContent>
           </Card>
           <Card
@@ -138,7 +115,7 @@ function AdminPage() {
             onClick={() => navigate("/products")}
           >
             <CardContent style={{ ...textStyle, color: "black" }}>
-              Products
+              Manage Inventory
             </CardContent>
           </Card>
           <Card
@@ -148,10 +125,10 @@ function AdminPage() {
             onClick={() => navigate("/orders")}
           >
             <CardContent style={{ ...textStyle, color: "black" }}>
-              Orders
+              Manage Customer Orders
             </CardContent>
           </Card>
-          <Card
+          {/* <Card
             style={cardStyle}
             onMouseEnter={handleHover}
             onMouseLeave={handleHoverOut}
@@ -160,7 +137,7 @@ function AdminPage() {
             <CardContent style={{ ...textStyle, color: "black" }}>
               Targets
             </CardContent>
-          </Card>
+          </Card> */}
           <Card
             style={cardStyle}
             onMouseEnter={handleHover}
@@ -168,7 +145,7 @@ function AdminPage() {
             onClick={() => navigate("/announcements")}
           >
             <CardContent style={{ ...textStyle, color: "black" }}>
-              Announcements
+            Announcements & Alerts
             </CardContent>
           </Card>
         </div>

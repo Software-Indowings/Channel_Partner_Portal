@@ -11,7 +11,7 @@ function Admin_profile() {
 
   useEffect(() => {
     axios
-      .get("https://server.indowings.com/allpartnersprofile/")
+      .get("http://localhost:5173/allpartnersprofile/")
       .then((res) => {
         if (res.data.length > 0) {
           setProfile(res.data);

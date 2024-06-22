@@ -96,7 +96,7 @@ function Update_profile(props) {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/allpartnersprofile`)
+      .get(`http://localhost:5173/allpartnersprofile`)
       .then((res) => {
         setProfile(res.data);
       })
@@ -143,13 +143,13 @@ function Update_profile(props) {
     console.log("run");
     await Promise.all([
       axios
-        .post("https://server.indowings.com/profile_insert/", formattedValues)
+        .post("http://localhost:5173/profile_insert/", formattedValues)
         .then((res) => {
           console.log("success-->", res);
         })
         .catch((err) => console.log("err in profile_insert api-->", err)),
       axios
-        .post("https://server.indowings.com/updateStep", {
+        .post("http://localhost:5173/updateStep", {
           count: 1,
           user: user.username,
         })

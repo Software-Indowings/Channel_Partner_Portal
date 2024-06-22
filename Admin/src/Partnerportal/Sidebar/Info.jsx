@@ -23,7 +23,7 @@ function Info() {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/legal-info`)
+      .get(`http://localhost:5173/legal-info`)
       .then((res) => {
         setInfo(res.data);
       })

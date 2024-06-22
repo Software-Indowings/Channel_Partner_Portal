@@ -11,7 +11,7 @@ function AddPartner() {
 
   useEffect(() => {
     axios
-      .get("https://server.indowings.com/")
+      .get("http://localhost:5173/")
       .then((res) => {
         if (res.data.length > 0) {
           setPartners(res.data);
@@ -33,7 +33,7 @@ function AddPartner() {
     });
 
     axios
-      .put(`https://server.indowings.com/updateverify/${partnerId}`, {
+      .put(`http://localhost:5173/updateverify/${partnerId}`, {
         is_verified: updatedPartners.find((partner) => partner.id === partnerId)
           .is_verified,
       })
@@ -57,7 +57,7 @@ function AddPartner() {
     setPartners(updatedPartners);
 
     axios
-      .put(`http://localhost:3307/updatecontract/${partnerId}`, {
+      .put(`http://localhost:5173/updatecontract/${partnerId}`, {
         contract: updatedPartners.find((partner) => partner.id === partnerId)
           .contract,
       })
@@ -70,7 +70,7 @@ function AddPartner() {
     const partner = partners.find((partner) => partner.id === partnerId);
     if (partner && partner.profile_id) {
       axios
-        .get(`http://localhost:3307/api/partners_profile/${partner.profile_id}`)
+        .get(`http://server.indowings.com/api/partners_profile/${partner.profile_id}`)
         .then((res) => {
           const profileData = res.data;
           console.log(profileData);
@@ -85,7 +85,7 @@ function AddPartner() {
 
       // Fetch company KYC data
       axios
-      .get(`http://localhost:3307/api/company_kyc/${partner.company_id}`)
+      .get(`http://server.indowings.com/api/company_kyc/${partner.company_id}`)
       .then((res) => {
         const { pan_number } = res.data;
         console.log("Pan Number:", pan_number);
@@ -129,7 +129,7 @@ function AddPartner() {
       >
         <h3 style={{ textAlign: "center", marginBottom: "5px" }}>
           {" "}
-          Partner Credentials List
+          Partner Insights
         </h3>
         {/* <div style={{ textAlign: "right" }}>
           <Link to="/create" className="btn btn-success">
@@ -162,13 +162,15 @@ function AddPartner() {
               <th>Email</th>
               {/* <th>Category</th>
               <th>Commission(%)</th> */}
-              <th>Company Profile</th>
-              <th>Company KYC</th>
-              <th>Approve</th>
+              <th>Profile Details</th>
+              <th>KYC Details</th>
+             
+             
+              <th>Manage Partner</th>
+              <th>Manage Contract</th>
+
+              <th>Confirm / Decline</th>
               <th>Review</th>
-              <th>Manage</th>
-              <th>Send Contract</th>
-              <th>Read Contract</th>
             </tr>
           </thead>
           <tbody>
@@ -207,6 +209,22 @@ function AddPartner() {
                     "Not Available"
                   )}
                 </td>
+                <td>
+                  <Link
+                    to={`/read/${partner.id}`}
+                    className="btn btn-sm btn-info"
+                  >
+                    Manage
+                  </Link>
+                </td>
+                <td>
+                  <Link
+                    to={`/contract/${partner.id}`}
+                    className="btn btn-sm btn-info"
+                  >
+                    Manage Contract
+                  </Link>
+                </td>
 
                 <td>
                   <button
@@ -218,31 +236,10 @@ function AddPartner() {
                 </td>
 
                 <td>{partner.review}</td>
-                <td>
-                  <Link
-                    to={`/read/${partner.id}`}
-                    className="btn btn-sm btn-info"
-                  >
-                    Manage
-                  </Link>
-                </td>
-                <td>
-                  <button
-                    onClick={() => contractVerification(partner.id)}
-                    className="btn btn-sm btn-primary"
-                  >
-                    {partner.contract === 0 ? "Send" : "Sent"}
-                  </button>
-                </td>
+              
+             
                 
-                <td>
-                  <Link
-                    to={`/contract/${partner.id}`}
-                    className="btn btn-sm btn-info"
-                  >
-                    Manage Contract
-                  </Link>
-                </td>
+              
 
               </tr>
             ))}

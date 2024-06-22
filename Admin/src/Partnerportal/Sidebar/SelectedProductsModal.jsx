@@ -98,7 +98,7 @@ function SelectedProductsModal({ selectedProducts, onClose }) {
     };
 
     axios
-      .post("https://server.indowings.com/orders", orderData)
+      .post("http://localhost:5173/orders", orderData)
       .then((response) => {
         console.log("Order placed successfully:", response.data);
         alert("Order placed successfully!");

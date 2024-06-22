@@ -49,7 +49,7 @@ function Register() {
         password
       );
       const user = userCredential.user;
-      await axios.post("https://server.indowings.com/register/", {
+      await axios.post("http://localhost:5173/register/", {
         username: email,
       });
       await sendEmailVerification(user);

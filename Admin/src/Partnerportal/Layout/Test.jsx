@@ -6,7 +6,7 @@ function Test() {
     const [userCategory, setUserCategory] = useState('');
 
     useEffect(() => {
-        axios.get('https://server.indowings.com/')
+        axios.get('http://localhost:5173/')
             .then(res => {
                 if (res.data.length > 0) {
                     setUserCategory(res.data[1].category);
@@ -14,7 +14,7 @@ function Test() {
             })
             .catch(err => console.log(err));
 
-        axios.get('https://server.indowings.com/products_create/')
+        axios.get('http://localhost:5173/products_create/')
             .then(res => {
                 if (res.data.length > 0) {
                     const productsWithCount = res.data.map(product => ({ ...product, count: 0 }));

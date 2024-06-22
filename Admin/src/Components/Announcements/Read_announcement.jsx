@@ -10,7 +10,7 @@ function Read_announcement(props) {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/read_announcement/${announce_id}`)
+      .get(`http://localhost:5173/read_announcement/${announce_id}`)
       .then((res) => {
         setAnnouncements(res.data[0]);
       })
@@ -19,7 +19,7 @@ function Read_announcement(props) {
 
   const handleDelete = (announce_id) => {
     axios
-      .delete(`https://server.indowings.com/delete_announcement/${announce_id}`)
+      .delete(`http://localhost:5173/delete_announcement/${announce_id}`)
       .then((res) => {
         navigate("/announcements");
       })

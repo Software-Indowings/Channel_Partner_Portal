@@ -30,7 +30,7 @@ function Order(props) {
   };
 
   useEffect(() => {
-    fetch("https://server.indowings.com/allorders")
+    fetch("http://localhost:5173/allorders")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

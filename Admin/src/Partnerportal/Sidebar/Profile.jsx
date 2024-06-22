@@ -24,7 +24,7 @@ function Profile() {
 
   useEffect(() => {
     axios
-      .get(`https://server.indowings.com/allpartnersprofile`)
+      .get(`http://localhost:5173/allpartnersprofile`)
       .then((res) => {
         setProfile(res.data);
       })

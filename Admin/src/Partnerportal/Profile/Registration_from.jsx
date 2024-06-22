@@ -106,7 +106,7 @@ function Registration_from(props) {
   useEffect(() => {
     const fetch = async () => {
       await axios
-        .post(`https://server.indowings.com/loginUser`, {
+        .post(`http://localhost:5173/loginUser`, {
           user: user.username,
         })
         .then((res) => {
@@ -121,7 +121,7 @@ function Registration_from(props) {
   useEffect(() => {
     const fetchDirectors = async (companyId) => {
       await axios
-        .post(`https://server.indowings.com/getDirectors`, {
+        .post(`http://localhost:5173/getDirectors`, {
           companyId: companyId,
         })
         .then((res) => {
@@ -131,7 +131,7 @@ function Registration_from(props) {
     };
     const fetch = async () => {
       await axios
-        .post(`https://server.indowings.com/getSingleCompany`, {
+        .post(`http://localhost:5173/getSingleCompany`, {
           user: user.username,
         })
         .then((res) => {
@@ -179,8 +179,8 @@ function Registration_from(props) {
       console.log("Sending form data to server...");
 
       const [submitResponse, updateStepResponse] = await Promise.all([
-        axios.post("https://server.indowings.com/submitform/", formattedValues),
-        axios.post("https://server.indowings.com/updateStep", {
+        axios.post("http://localhost:5173/submitform/", formattedValues),
+        axios.post("http://localhost:5173/updateStep", {
           count: 3,
           user: user.username,
         }),

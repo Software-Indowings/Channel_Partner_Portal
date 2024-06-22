@@ -14,7 +14,7 @@ function Create() {
     const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('https://server.indowings.com/partner/', values)
+        axios.post('http://localhost:5173/partner/', values)
             .then(res => {
                 console.log(res);
                 navigate('/addpartner')
